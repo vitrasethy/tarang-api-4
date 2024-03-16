@@ -6,9 +6,12 @@
     "license": "MIT",
     "require": {
         "php": "^8.2",
+        "dedoc/scramble": "^0.9.0",
+        "doctrine/dbal": "^4.0",
         "laravel/breeze": "^2.0",
         "laravel/framework": "^11.0",
         "laravel/sanctum": "^4.0",
+        "laravel/socialite": "^5.12",
         "laravel/tinker": "^2.9"
     },
     "require-dev": {
