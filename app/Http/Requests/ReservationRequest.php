@@ -14,6 +14,8 @@ class ReservationRequest extends FormRequest
             'date' => ['required', 'date'],
             'start_time' => ['required', 'date'],
             'end_time' => ['required', 'date'],
+            'user_id' => 'required|exists:users,id',
+            'venue_id' => 'required|exists:venues,id'
         ];
     }
 
