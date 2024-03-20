@@ -12,9 +12,8 @@ class ReservationRequest extends FormRequest
             'phone' => ['required', 'string'],
             'attendee' => ['required', 'integer'],
             'date' => ['required', 'date'],
-            'start_time' => ['required', 'date'],
-            'end_time' => ['required', 'date'],
-            'user_id' => 'required|exists:users,id',
+            'start_time' => ['required', 'date_format:H:i'],
+            'end_time' => ['required', 'date_format:H:i'],
             'venue_id' => 'required|exists:venues,id'
         ];
     }
