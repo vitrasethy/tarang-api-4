@@ -17,6 +17,7 @@ class Reservation extends Model
         'start_time',
         'end_time',
         'venue_id',
+        'user_id'
     ];
 
     protected function user(): BelongsTo
