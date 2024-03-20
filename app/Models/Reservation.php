@@ -20,12 +20,12 @@ class Reservation extends Model
         'user_id'
     ];
 
-    protected function user(): BelongsTo
+    public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
     }
 
-    protected function venue(): BelongsTo
+    public function venue(): BelongsTo
     {
         return $this->belongsTo(Venue::class);
     }

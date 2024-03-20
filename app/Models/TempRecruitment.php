@@ -16,12 +16,12 @@ class TempRecruitment extends Model
         'user_id',
     ];
 
-    protected function team(): BelongsTo
+    public function team(): BelongsTo
     {
         return $this->belongsTo(Team::class);
     }
 
-    protected function user(): BelongsTo
+    public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
     }

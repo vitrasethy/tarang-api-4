@@ -16,7 +16,7 @@ class MatchGame extends Model
         'team2_id',
     ];
 
-    protected function reservation(): BelongsTo
+    public function reservation(): BelongsTo
     {
         return $this->belongsTo(Reservation::class);
     }

@@ -17,12 +17,12 @@ class Announcement extends Model
         'reservation_id',
     ];
 
-    protected function team(): BelongsTo
+    public function team(): BelongsTo
     {
         return $this->belongsTo(Team::class);
     }
 
-    protected function reservation(): BelongsTo
+    public function reservation(): BelongsTo
     {
         return $this->belongsTo(Reservation::class);
     }

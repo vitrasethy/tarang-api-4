@@ -16,7 +16,7 @@ class Team extends Model
         'sport_type_id',
     ];
 
-    protected function sportType(): BelongsTo
+    public function sportType(): BelongsTo
     {
         return $this->belongsTo(SportType::class);
     }
