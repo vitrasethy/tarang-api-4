@@ -17,7 +17,10 @@ class Reservation extends Model
         'start_time',
         'end_time',
         'venue_id',
-        'user_id'
+        'user_id',
+        'find_team',
+        'find_member',
+        'team_id',
     ];
 
     public function user(): BelongsTo

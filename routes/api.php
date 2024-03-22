@@ -1,6 +1,5 @@
 <?php
 
-use App\Http\Controllers\AnnouncementController;
 use App\Http\Controllers\MatchGameController;
 use App\Http\Controllers\ReservationController;
 use App\Http\Controllers\SportTypeController;
@@ -18,6 +17,5 @@ Route::apiResource('sport-types', SportTypeController::class);
 Route::apiResource('venues', VenueController::class);
 Route::apiResource('reservation', ReservationController::class);
 Route::apiResource('teams', TeamController::class);
-Route::apiResource('announcements', AnnouncementController::class);
 Route::apiResource('match-games', MatchGameController::class);
 Route::apiResource('temp-recruitments', TempRecruitmentController::class);

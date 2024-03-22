@@ -14,7 +14,10 @@ class ReservationRequest extends FormRequest
             'date' => ['required', 'date'],
             'start_time' => ['required', 'date_format:H:i'],
             'end_time' => ['required', 'date_format:H:i'],
-            'venue_id' => ['required', 'exists:venues,id']
+            'venue_id' => ['required', 'exists:venues,id'],
+            'find_team' => ['required', 'boolean'],
+            'find_member' => ['required', 'boolean'],
+            'team_id' => ['nullable', 'exists:teams,id'],
         ];
     }
 

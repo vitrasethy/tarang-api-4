@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\ReservationRequest;
 use App\Http\Resources\ReservationResource;
 use App\Models\Reservation;
+use Illuminate\Http\Request;
 
 class ReservationController extends Controller
 {
@@ -17,10 +18,8 @@ class ReservationController extends Controller
 
     public function store(ReservationRequest $request)
     {
-        $validated = $request->validated();
-
         Reservation::create([
-            ...$validated,
+            ...$request->validated(),
             'user_id' => 1,
         ]);
 
@@ -34,9 +33,19 @@ class ReservationController extends Controller
         return new ReservationResource($reservation);
     }
 
-    public function update(ReservationRequest $request, Reservation $reservation)
+    public function update(Request $request, Reservation $reservation)
     {
-        $validated = $request->validated();
+        $validated = $request->validate([
+            'phone' => ['sometimes', 'required', 'string'],
+            'attendee' => ['sometimes', 'required', 'integer'],
+            'date' => ['sometimes', 'required', 'date'],
+            'start_time' => ['sometimes', 'required', 'date_format:H:i'],
+            'end_time' => ['sometimes', 'required', 'date_format:H:i'],
+            'venue_id' => ['sometimes', 'required', 'exists:venues,id'],
+            'find_team' => ['sometimes', 'required', 'boolean'],
+            'find_member' => ['sometimes', 'required', 'boolean'],
+            'team_id' => ['sometimes', 'nullable', 'exists:teams,id'],
+        ]);
 
         $reservation->update($validated);
 
