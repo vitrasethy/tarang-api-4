@@ -23,7 +23,7 @@ class ReservationResource extends JsonResource
             'find_member' => $this->find_member,
 
             'venue' => new VenueResource($this->whenLoaded('venue')),
-            'user' => new VenueResource($this->whenLoaded('user')),
+            'user' => new UserResource($this->whenLoaded('user')),
         ];
     }
 }
