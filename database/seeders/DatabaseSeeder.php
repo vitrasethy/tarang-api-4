@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Amenity;
 use App\Models\SportType;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
@@ -19,6 +20,14 @@ class DatabaseSeeder extends Seeder
             ['name' => 'Volleyball'],
             ['name' => 'Basketball'],
             ['name' => 'Ping-pong'],
+        ]);
+
+        Amenity::insert([
+            ['name' => 'Parking'],
+            ['name' => 'Drinking Water'],
+            ['name' => 'First Aid'],
+            ['name' => 'Rest Room'],
+            ['name' => 'Change Room'],
         ]);
     }
 }

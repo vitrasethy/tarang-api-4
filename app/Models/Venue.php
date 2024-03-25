@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Venue extends Model
@@ -15,11 +16,16 @@ class Venue extends Model
         'size',
         'photo',
         'description',
-        'sport_type_id'
+        'sport_type_id',
     ];
 
     public function sportType(): BelongsTo
     {
         return $this->belongsTo(SportType::class);
+    }
+
+    public function amenities(): BelongsToMany
+    {
+        return $this->belongsToMany(Amenity::class);
     }
 }

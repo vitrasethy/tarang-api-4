@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AmenityController;
 use App\Http\Controllers\GetUserController;
 use App\Http\Controllers\MatchGameController;
 use App\Http\Controllers\ReservationController;
@@ -20,4 +21,5 @@ Route::apiResource('reservation', ReservationController::class);
 Route::apiResource('teams', TeamController::class);
 Route::apiResource('match-games', MatchGameController::class);
 Route::apiResource('temp-recruitments', TempRecruitmentController::class);
+Route::apiResource('amenities', AmenityController::class);
 Route::get('user-data', GetUserController::class);
