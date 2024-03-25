@@ -10,7 +10,7 @@ class MatchGameController extends Controller
 {
     public function index()
     {
-        return MatchGameResource::collection(MatchGame::with(['reservation', 'team']));
+        return MatchGameResource::collection(MatchGame::with(['reservation', 'team'])->get());
     }
 
     public function store(MatchGameRequest $request)
