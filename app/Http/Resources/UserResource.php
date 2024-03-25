@@ -6,9 +6,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-/** @mixin User
- * @property boolean $is_admin
- */
+/** @mixin User */
 class UserResource extends JsonResource
 {
     public function toArray(Request $request): array
@@ -16,7 +14,8 @@ class UserResource extends JsonResource
         return [
             'id' => $this->id,
             'name' => $this->name,
-            'email' => $this->email,
+            'phone' => $this->phone,
+            'photo' => $this->photo,
             'is_admin' => $this->is_admin,
         ];
     }
