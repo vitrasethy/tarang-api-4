@@ -20,7 +20,7 @@ class TeamController extends Controller
             'logo' => $request->hasFile('logo') ? $request->file('logo')->store('logos') : null,
         ]);
 
-//        $team->users()->attach(1);
+        $team->users()->attach(1);
 
         return new TeamResource($team);
     }

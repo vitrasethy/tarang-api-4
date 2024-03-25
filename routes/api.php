@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\GetUserController;
 use App\Http\Controllers\MatchGameController;
 use App\Http\Controllers\ReservationController;
 use App\Http\Controllers\SportTypeController;
@@ -19,3 +20,4 @@ Route::apiResource('reservation', ReservationController::class);
 Route::apiResource('teams', TeamController::class);
 Route::apiResource('match-games', MatchGameController::class);
 Route::apiResource('temp-recruitments', TempRecruitmentController::class);
+Route::get('user-data', GetUserController::class);

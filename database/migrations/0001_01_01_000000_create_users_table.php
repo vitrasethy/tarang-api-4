@@ -20,6 +20,7 @@ return new class extends Migration {
             $table->string('password')->nullable();
             $table->string('provider_token')->nullable();
             $table->boolean('is_admin')->default(false);
+            $table->string('photo')->nullable();
             $table->rememberToken();
             $table->timestamps();
         });

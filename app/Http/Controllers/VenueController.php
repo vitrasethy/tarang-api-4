@@ -39,15 +39,7 @@ class VenueController extends Controller
 
     public function update(VenueRequest $request, Venue $venue)
     {
-        $request->validated();
-
-        $venue->update([
-            'name' => $request->input('name'),
-            'sport_type_id' => $request->input('sport_type_id'),
-            'size' => $request->input('size'),
-            'photo' => $request->file('venue')->store('venues'),
-            'description' => $request->input('description'),
-        ]);
+        $venue->update($request->validated());
 
         return response()->noContent();
     }
