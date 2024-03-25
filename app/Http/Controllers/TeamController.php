@@ -17,8 +17,10 @@ class TeamController extends Controller
     {
         $team = Team::create([
             ...$request->validated(),
-            'logo' => $request->file('logo')->store('logos'),
+            'logo' => $request->hasFile('logo') ? $request->file('logo')->store('logos') : null,
         ]);
+
+//        $team->users()->attach(1);
 
         return new TeamResource($team);
     }
