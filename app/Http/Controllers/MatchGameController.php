@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\MatchGameRequest;
+use App\Http\Resources\MatchGameCollection;
 use App\Http\Resources\MatchGameResource;
 use App\Models\MatchGame;
 
@@ -10,7 +11,7 @@ class MatchGameController extends Controller
 {
     public function index()
     {
-        return MatchGameResource::collection(MatchGame::with(['reservation', 'team'])->get());
+        return new MatchGameCollection(MatchGame::with(['reservation', 'team'])->get());
     }
 
     public function store(MatchGameRequest $request)

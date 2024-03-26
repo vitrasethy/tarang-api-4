@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\TeamRequest;
+use App\Http\Resources\TeamCollection;
 use App\Http\Resources\TeamResource;
 use App\Models\Team;
 
@@ -10,7 +11,7 @@ class TeamController extends Controller
 {
     public function index()
     {
-        return TeamResource::collection(Team::with('sportType')->get());
+        return new TeamCollection(Team::with('sportType')->get());
     }
 
     public function store(TeamRequest $request)

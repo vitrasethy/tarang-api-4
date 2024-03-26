@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\SportTypeRequest;
+use App\Http\Resources\SportTypeCollection;
 use App\Http\Resources\SportTypeResource;
 use App\Models\SportType;
 
@@ -12,7 +13,7 @@ class SportTypeController extends Controller
     {
         $sportTypes = SportType::all();
 
-        return SportTypeResource::collection($sportTypes);
+        return new SportTypeCollection($sportTypes);
     }
 
     public function store(SportTypeRequest $request)

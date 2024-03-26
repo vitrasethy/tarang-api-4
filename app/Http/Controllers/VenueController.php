@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\VenueRequest;
+use App\Http\Resources\VenueCollection;
 use App\Http\Resources\VenueResource;
 use App\Models\Venue;
 
@@ -12,20 +13,19 @@ class VenueController extends Controller
     {
         $venues = Venue::with('sportType')->get();
 
-        return VenueResource::collection($venues);
+        return new VenueCollection($venues);
     }
 
     public function store(VenueRequest $request)
     {
         $request->validated();
 
-        Venue::create([
-            'name' => $request->input('name'),
-            'sport_type_id' => $request->input('sport_type_id'),
-            'size' => $request->input('size'),
+        $venue = Venue::create([
+            ...$request->except('amenity_id'),
             'photo' => $request->file('photo')->store('venues'),
-            'description' => $request->input('description'),
         ]);
+
+        $venue->amenities()->attach($request->input('amenity_id'));
 
         return response()->noContent();
     }
