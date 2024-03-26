@@ -33,6 +33,11 @@ class Reservation extends Model
         return $this->belongsTo(Venue::class);
     }
 
+    public function team(): BelongsTo
+    {
+        return $this->belongsTo(Team::class);
+    }
+
     protected function casts(): array
     {
         return [

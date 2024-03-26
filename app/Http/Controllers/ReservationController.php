@@ -12,7 +12,7 @@ class ReservationController extends Controller
 {
     public function index()
     {
-        $reservations = Reservation::with(['venue', 'user'])->get();
+        $reservations = Reservation::with(['venue.sportType', 'user'])->get();
 
         return new ReservationCollection($reservations);
     }

@@ -12,6 +12,7 @@ class MatchGameRequest extends FormRequest
             'is_accepted' => ['boolean'],
             'team1_id' => ['required', 'exists:teams,id'],
             'team2_id' => ['required', 'exists:team,id'],
+            'reservation_id' => 'required|exists:reservations,id',
         ];
     }
 
