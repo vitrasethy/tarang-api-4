@@ -22,7 +22,7 @@ class ReservationResource extends JsonResource
             'find_team' => $this->find_team,
             'find_member' => $this->find_member,
 
-            'venue' => new VenueResource($this->whenLoaded('venue.sportType')),
+            'venue' => new VenueResource($this->whenLoaded('venue')),
             'user' => new UserResource($this->whenLoaded('user')),
             'team' => new TeamResource($this->whenLoaded('team')),
         ];
