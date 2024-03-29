@@ -15,6 +15,10 @@ Route::middleware(['auth:sanctum'])->get('/user', function (Request $request) {
     return $request->user();
 });
 
+Route::get('is-login', function () {
+    return response()->status();
+})->middleware(['auth:sanctum']);
+
 Route::apiResource('sport-types', SportTypeController::class);
 Route::apiResource('venues', VenueController::class);
 Route::apiResource('reservation', ReservationController::class);
