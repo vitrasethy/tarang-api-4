@@ -11,7 +11,7 @@ class TeamController extends Controller
 {
     public function index()
     {
-        return new TeamCollection(Team::with('sportType')->get());
+        return new TeamCollection(Team::with(['sportType', 'users'])->get());
     }
 
     public function store(TeamRequest $request)

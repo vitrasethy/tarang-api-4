@@ -14,7 +14,7 @@ class VenueRequest extends FormRequest
             'photo' => ['required', 'image'],
             'description' => ['nullable', 'string'],
             'sport_type_id' => 'required|exists:sport_types,id',
-            'amenity_id.*' => 'required|array|exists:amenities,id'
+            'amenity_id.*' => 'required|exists:amenities,id'
         ];
     }
 

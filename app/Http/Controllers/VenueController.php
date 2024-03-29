@@ -39,7 +39,14 @@ class VenueController extends Controller
 
     public function update(VenueRequest $request, Venue $venue)
     {
-        $venue->update($request->validated());
+        $request->validated();
+
+        $venue->update([
+            ...$request->except('amenity_id'),
+            'photo' => $request->file('photo')->store('venues'),
+        ]);
+
+        $venue->amenities()->sync($request->input('amenity_id'));
 
         return response()->noContent();
     }

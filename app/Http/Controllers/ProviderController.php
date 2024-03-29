@@ -17,15 +17,18 @@ class ProviderController extends Controller
     {
         $providerUser = Socialite::driver($provider)->user();
 
-        $user = User::updateOrCreate([
-            'provider_id' => $providerUser->id,
-        ], [
-            'name' => $providerUser->name,
-            'provider_token' => $providerUser->token,
-        ]);
+        $user = User::updateOrCreate(
+            [
+                "provider_id" => $providerUser->id,
+            ],
+            [
+                "name" => $providerUser->name,
+                "provider_token" => $providerUser->token,
+            ]
+        );
 
         Auth::login($user);
 
-        return redirect()->away('http://localhost:5173');
+        return redirect()->away("https://tarang.site");
     }
 }
