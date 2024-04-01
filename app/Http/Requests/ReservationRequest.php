@@ -18,6 +18,7 @@ class ReservationRequest extends FormRequest
             'find_team' => ['required', 'boolean'],
             'find_member' => ['required', 'boolean'],
             'team_id' => ['nullable', 'exists:teams,id'],
+            'comment' => ['nullable', 'string'],
         ];
     }
 

@@ -20,6 +20,7 @@ return new class extends Migration {
             $table->time('end_time');
             $table->boolean('find_team');
             $table->boolean('find_member');
+            $table->text('comment')->nullable();
             $table->softDeletes();
             $table->timestamps();
         });
