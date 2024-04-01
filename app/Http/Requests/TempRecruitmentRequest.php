@@ -12,6 +12,7 @@ class TempRecruitmentRequest extends FormRequest
             'is_accepted' => ['boolean'],
             'team_id' => ['required', 'exists:teams,id'],
             'user_id' => ['required', 'exists:users,id'],
+            'comment' => 'nullable|string',
         ];
     }
 

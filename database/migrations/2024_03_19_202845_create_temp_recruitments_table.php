@@ -10,6 +10,7 @@ return new class extends Migration {
         Schema::create('temp_recruitments', function (Blueprint $table) {
             $table->id();
             $table->boolean('is_accepted')->default(false);
+            $table->text('comment')->nullable();
             $table->foreignId('team_id')->constrained()->cascadeOnDelete();
             $table->foreignId('user_id')->constrained()->cascadeOnDelete();
             $table->softDeletes();

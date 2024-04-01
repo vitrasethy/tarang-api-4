@@ -14,6 +14,7 @@ class TempRecruitmentResource extends JsonResource
         return [
             'id' => $this->id,
             'is_accepted' => $this->is_accepted,
+            'comment' => $this->comment,
 
             'team' => new TeamResource($this->whenLoaded('team')),
             'user' => new UserResource($this->whenLoaded('user')),

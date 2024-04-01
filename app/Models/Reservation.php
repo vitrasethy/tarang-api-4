@@ -13,7 +13,7 @@ class Reservation extends Model
     protected $fillable = [
         'phone', 'attendee', 'date', 'start_time', 'end_time',
         'venue_id', 'user_id', 'find_team', 'find_member',
-        'team_id', 'comment',
+        'team_id',
     ];
 
     public function user(): BelongsTo

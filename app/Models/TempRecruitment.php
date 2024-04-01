@@ -14,6 +14,7 @@ class TempRecruitment extends Model
         'is_accepted',
         'team_id',
         'user_id',
+        'comment',
     ];
 
     public function team(): BelongsTo

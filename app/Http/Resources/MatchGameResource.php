@@ -17,6 +17,7 @@ class MatchGameResource extends JsonResource
         return [
             'id' => $this->id,
             'is_accepted' => $this->is_accepted,
+            'comment' => $this->comment,
 
             'reservation' => new ReservationResource($this->whenLoaded('reservation')),
             'team1' => new TeamResource($this->whenLoaded('team', $this->team1)),
