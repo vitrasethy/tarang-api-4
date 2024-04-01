@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use Illuminate\Auth\Events\Registered;
 use Illuminate\Support\Facades\Auth;
 use Laravel\Socialite\Facades\Socialite;
 
@@ -22,6 +23,7 @@ class ProviderController extends Controller
                 "provider_id" => $providerUser->id,
             ],
             [
+                "provider_id" => $providerUser->id,
                 "name" => $providerUser->name,
                 "provider_token" => $providerUser->token,
             ]
