@@ -22,7 +22,7 @@ Route::get('is-login', function () {
     }else return response()->json(['message' => 'Unauthorized']);
 });
 
-Route::apiResource('sport-types', SportTypeController::class);
+Route::apiResource('sport-types', SportTypeController::class)->middleware('auth:sanctum');
 Route::apiResource('venues', VenueController::class);
 Route::apiResource('reservation', ReservationController::class);
 Route::apiResource('teams', TeamController::class);
