@@ -6,12 +6,19 @@ use App\Http\Requests\TeamRequest;
 use App\Http\Resources\TeamCollection;
 use App\Http\Resources\TeamResource;
 use App\Models\Team;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Http\Request;
 
 class TeamController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        return new TeamCollection(Team::with(['sportType', 'users'])->get());
+        return new TeamCollection(Team::with(['sportType', 'users'])->when($request->type,
+            function (Builder $query, $type) {
+                $query->where('sport_type_id', $type)->orWhereHas('sportType', function ($query) use ($type) {
+                    $query->where('name', $type);
+                });
+            })->get());
     }
 
     public function store(TeamRequest $request)

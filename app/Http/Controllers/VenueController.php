@@ -6,12 +6,18 @@ use App\Http\Requests\VenueRequest;
 use App\Http\Resources\VenueCollection;
 use App\Http\Resources\VenueResource;
 use App\Models\Venue;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Http\Request;
 
 class VenueController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $venues = Venue::with('sportType')->get();
+        $venues = Venue::with('sportType')->when($request->type, function (Builder $query, $type) {
+            $query->where('sport_type_id', $type)->orWhereHas('sportType', function ($query) use ($type) {
+                $query->where('name', $type);
+            });
+        })->get();
 
         return new VenueCollection($venues);
     }
