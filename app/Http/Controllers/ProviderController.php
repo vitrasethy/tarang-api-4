@@ -31,6 +31,6 @@ class ProviderController extends Controller
 
         Auth::login($user);
 
-        return redirect()->away("https://tarang.site");
+        return redirect()->away("http://localhost:3000");
     }
 }

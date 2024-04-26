@@ -13,7 +13,7 @@ return new class extends Migration {
             $table->string('phone');
             $table->foreignId('user_id')->constrained()->cascadeOnDelete();
             $table->foreignId('venue_id')->constrained()->cascadeOnDelete();
-            $table->foreignIdFor(Team::class)->constrained()->cascadeOnDelete();
+            $table->foreignIdFor(Team::class)->nullable()->constrained()->cascadeOnDelete();
             $table->tinyInteger('attendee');
             $table->date('date');
             $table->time('start_time');
