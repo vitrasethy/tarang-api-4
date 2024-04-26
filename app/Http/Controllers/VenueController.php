@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\VenueRequest;
 use App\Http\Resources\VenueCollection;
 use App\Http\Resources\VenueResource;
+use App\Models\Reservation;
 use App\Models\Venue;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
@@ -59,6 +60,10 @@ class VenueController extends Controller
 
     public function destroy(Venue $venue)
     {
+        if (Reservation::where('venue_id', $venue->id)->exists()) {
+            return response("Can't delete.", 403);
+        }
+
         $venue->delete();
 
         return response()->noContent();

@@ -23,7 +23,6 @@ class ProviderController extends Controller
                 "provider_id" => $providerUser->id,
             ],
             [
-                "provider_id" => $providerUser->id,
                 "name" => $providerUser->name,
                 "provider_token" => $providerUser->token,
             ]
@@ -31,6 +30,6 @@ class ProviderController extends Controller
 
         Auth::login($user);
 
-        return redirect()->away("http://localhost:3000");
+        return redirect(config('app.frontend_url'));
     }
 }
