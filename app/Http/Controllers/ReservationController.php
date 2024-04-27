@@ -15,7 +15,7 @@ class ReservationController extends Controller
             "venue.sportType",
             "user",
             "team",
-        ])->get();
+        ])->paginate(5);
 
         return new ReservationCollection($reservations);
     }

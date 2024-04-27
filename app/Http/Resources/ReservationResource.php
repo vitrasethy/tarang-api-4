@@ -16,11 +16,12 @@ class ReservationResource extends JsonResource
             'id' => $this->id,
             'phone' => $this->phone,
             'attendee' => $this->attendee,
-            'date' => Carbon::parse($this->date)->toFormattedDayDateString(),
+            'date' => $this->date,
             'start_time' => date('h:i A', strtotime($this->start_time)),
             'end_time' => date('h:i A', strtotime($this->end_time)),
             'find_team' => $this->find_team,
             'find_member' => $this->find_member,
+            'created_at' => $this->created_at,
 
             'venue' => new VenueResource($this->whenLoaded('venue')),
             'user' => new UserResource($this->whenLoaded('user')),
