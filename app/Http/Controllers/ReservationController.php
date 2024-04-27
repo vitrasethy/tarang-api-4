@@ -17,7 +17,7 @@ class ReservationController extends Controller
             "team",
         ])->paginate(5);
 
-        return new ReservationCollection($reservations);
+        return ReservationResource::collection($reservations);
     }
 
     public function store(ReservationRequest $request)
