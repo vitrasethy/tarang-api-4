@@ -14,25 +14,28 @@ class GetAvailablesTimeController extends Controller
      */
     public function __invoke(Request $request)
     {
-        $existing_bookings = DB::table('reservations')->select('id', 'start_time', 'end_time')->get()->toArray();
+        $existing_bookings = DB::table('reservations')->select('id', 'start_time', 'end_time')->where('date', '=', $request->date)->get()->toArray();
+        $new_available_time_slots = [];
 
-        foreach ($existing_bookings as $booking) {
-            $booking->start_time = $this->convertTimeToDecimal($booking->start_time);
-            $booking->end_time = $this->convertTimeToDecimal($booking->end_time);
+        if ($existing_bookings) {
+            foreach ($existing_bookings as $booking) {
+                $booking->start_time = $this->convertTimeToDecimal($booking->start_time);
+                $booking->end_time = $this->convertTimeToDecimal($booking->end_time);
+            }
+
+            $times = array_merge(range(6, 22), array_map(function ($x) {
+                return $x + 0.5;
+            }, range(6, 21)));
+
+            $duration = 0.5;  // Each time slot represents half an hour
+
+            $available_time_slots = $this->find_available_time($existing_bookings, $times, $duration);
+
+            // Sort available time slots in ascending order
+            sort($available_time_slots);
+
+            $new_available_time_slots = array_map([$this, 'convertDecimalToTime'], $available_time_slots);
         }
-
-        $times = array_merge(range(6, 22), array_map(function ($x) {
-            return $x + 0.5;
-        }, range(6, 21)));
-
-        $duration = 0.5;  // Each time slot represents half an hour
-
-        $available_time_slots = $this->find_available_time($existing_bookings, $times, $duration);
-
-        // Sort available time slots in ascending order
-        sort($available_time_slots);
-
-        $new_available_time_slots = array_map([$this, 'convertDecimalToTime'], $available_time_slots);
 
         return response()->json(['available_times' => $new_available_time_slots]);
     }
