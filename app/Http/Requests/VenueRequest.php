@@ -9,7 +9,7 @@ class VenueRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => ['required', 'string'],
+            'name' => ['required', 'string', 'unique:venues,name'],
             'size' => ['required', 'integer'],
             'photo' => ['required', 'url:http,https'],
             'description' => ['nullable', 'string'],
