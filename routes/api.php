@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AmenityController;
+use App\Http\Controllers\GetAvailablesTimeController;
 use App\Http\Controllers\GetUserController;
 use App\Http\Controllers\MatchGameController;
 use App\Http\Controllers\ReservationController;
@@ -17,9 +18,9 @@ Route::middleware(['auth:sanctum'])->get('/user', function (Request $request) {
 });
 
 Route::get('is-login', function () {
-    if (Auth::check()){
+    if (Auth::check()) {
         return response()->json(['message' => 'Authorized']);
-    }else return response()->json(['message' => 'Unauthorized']);
+    } else return response()->json(['message' => 'Unauthorized']);
 });
 
 Route::apiResource('sport-types', SportTypeController::class);
@@ -31,3 +32,4 @@ Route::apiResource('temp-recruitments', TempRecruitmentController::class);
 Route::apiResource('amenities', AmenityController::class);
 Route::get('user-data', GetUserController::class);
 Route::get('reservations-user', [ReservationController::class, 'show_user']);
+Route::post('get-available-times', GetAvailablesTimeController::class);
