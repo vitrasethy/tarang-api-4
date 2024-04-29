@@ -44,9 +44,16 @@ class VenueController extends Controller
         return new VenueResource($venue);
     }
 
-    public function update(VenueRequest $request, Venue $venue)
+    public function update(Request $request, Venue $venue)
     {
-        $request->validated();
+        $request->validate([
+            'name' => ['required', 'string'],
+            'size' => ['required', 'integer'],
+            'photo' => ['sometimes', 'image'],
+            'description' => ['nullable', 'string'],
+            'sport_type_id' => 'required|exists:sport_types,id',
+            'amenity_id.*' => 'required|exists:amenities,id'
+        ]);
 
         $venue->update([
             ...$request->except('amenity_id'),
