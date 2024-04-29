@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AmenityController;
+use App\Http\Controllers\GetAvailablesTimeController;
 use App\Http\Controllers\GetUserController;
 use App\Http\Controllers\MatchGameController;
 use App\Http\Controllers\ReservationController;
@@ -32,3 +33,4 @@ Route::apiResource('temp-recruitments', TempRecruitmentController::class);
 Route::apiResource('amenities', AmenityController::class);
 Route::get('reservations-user', [ReservationController::class, 'show_user']);
 Route::get('users', [UserController::class, "getAllUsers"]);
+Route::post('available-time', GetAvailablesTimeController::class);
