@@ -10,7 +10,7 @@ class ReservationRequest extends FormRequest
     {
         return [
             'phone' => ['required', 'string'],
-            'attendee' => ['required', 'integer'],
+            'attendee' => ['nullable', 'integer'],
             'date' => ['required', 'date'],
             'start_time' => ['required', 'date_format:H:i'],
             'end_time' => ['required', 'date_format:H:i'],

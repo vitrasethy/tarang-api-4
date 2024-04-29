@@ -14,7 +14,7 @@ return new class extends Migration {
             $table->foreignId('user_id')->constrained()->cascadeOnDelete();
             $table->foreignId('venue_id')->constrained()->cascadeOnDelete();
             $table->foreignIdFor(Team::class)->nullable()->constrained()->cascadeOnDelete();
-            $table->tinyInteger('attendee');
+            $table->tinyInteger('attendee')->nullable();
             $table->date('date');
             $table->time('start_time');
             $table->time('end_time');
