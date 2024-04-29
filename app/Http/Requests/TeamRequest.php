@@ -10,7 +10,7 @@ class TeamRequest extends FormRequest
     {
         return [
             'name' => ['required', 'string'],
-            'logo' => ['nullable', 'image'],
+            'logo' => ['nullable', 'url:http,https'],
             'sport_type_id' => 'required|exists:sport_types,id'
         ];
     }

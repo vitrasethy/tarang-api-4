@@ -29,7 +29,6 @@ class VenueController extends Controller
 
         $venue = Venue::create([
             ...$request->except('amenity_id'),
-            'photo' => $request->file('photo')->store('venues'),
         ]);
 
         $venue->amenities()->attach($request->input('amenity_id'));
@@ -44,20 +43,12 @@ class VenueController extends Controller
         return new VenueResource($venue);
     }
 
-    public function update(Request $request, Venue $venue)
+    public function update(VenueRequest $request, Venue $venue)
     {
-        $request->validate([
-            'name' => ['required', 'string'],
-            'size' => ['required', 'integer'],
-            'photo' => ['sometimes', 'image'],
-            'description' => ['nullable', 'string'],
-            'sport_type_id' => 'required|exists:sport_types,id',
-            'amenity_id.*' => 'required|exists:amenities,id'
-        ]);
+        $request->validated();
 
         $venue->update([
             ...$request->except('amenity_id'),
-            'photo' => $request->file('photo')->store('venues'),
         ]);
 
         $venue->amenities()->sync($request->input('amenity_id'));

@@ -23,10 +23,7 @@ class TeamController extends Controller
 
     public function store(TeamRequest $request)
     {
-        $team = Team::create([
-            ...$request->validated(),
-            'logo' => $request->hasFile('logo') ? $request->file('logo')->store('logos') : null,
-        ]);
+        $team = Team::create([$request->validated()]);
 
         $team->users()->attach(1);
 

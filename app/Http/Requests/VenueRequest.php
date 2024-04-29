@@ -11,7 +11,7 @@ class VenueRequest extends FormRequest
         return [
             'name' => ['required', 'string'],
             'size' => ['required', 'integer'],
-            'photo' => ['required', 'image'],
+            'photo' => ['required', 'url:http,https'],
             'description' => ['nullable', 'string'],
             'sport_type_id' => 'required|exists:sport_types,id',
             'amenity_id.*' => 'required|exists:amenities,id'
