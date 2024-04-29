@@ -1,7 +1,6 @@
 <?php
 
 use App\Http\Controllers\AmenityController;
-use App\Http\Controllers\GetAvailablesTimeController;
 use App\Http\Controllers\GetUserController;
 use App\Http\Controllers\MatchGameController;
 use App\Http\Controllers\ReservationController;
