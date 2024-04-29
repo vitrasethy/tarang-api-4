@@ -10,7 +10,7 @@ class VenueRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => ['required', 'string', Rule::unique('venues')->ignore($this->route('venue'))],
+            'name' => ['required', 'string'],
             'size' => ['required', 'integer'],
             'photo' => ['nullable', 'url:http,https'],
             'description' => ['nullable', 'string'],
