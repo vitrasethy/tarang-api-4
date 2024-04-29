@@ -10,7 +10,7 @@ class TeamRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => ['required', 'string', Rule::unique('teams')->ignore($this->route('team'))],
+            'name' => ['required', 'string'],
             'logo' => ['nullable', 'url:http,https'],
             'sport_type_id' => 'required|exists:sport_types,id'
         ];

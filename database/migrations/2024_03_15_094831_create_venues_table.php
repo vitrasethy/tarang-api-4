@@ -13,7 +13,7 @@ return new class extends Migration {
             $table->foreignIdFor(SportType::class)->constrained()->cascadeOnDelete();
             $table->string('name');
             $table->tinyInteger('size');
-            $table->string('photo');
+            $table->string('photo')->nullable();
             $table->text('description')->nullable();
             $table->softDeletes();
             $table->timestamps();

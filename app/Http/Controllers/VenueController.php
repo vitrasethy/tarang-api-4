@@ -33,7 +33,7 @@ class VenueController extends Controller
 
         $venue->amenities()->attach($request->input('amenity_id'));
 
-        return response()->noContent();
+        return new VenueResource($venue);
     }
 
     public function show(Venue $venue)

@@ -12,7 +12,7 @@ class VenueRequest extends FormRequest
         return [
             'name' => ['required', 'string', Rule::unique('venues')->ignore($this->route('venue'))],
             'size' => ['required', 'integer'],
-            'photo' => ['required', 'url:http,https'],
+            'photo' => ['nullable', 'url:http,https'],
             'description' => ['nullable', 'string'],
             'sport_type_id' => 'required|exists:sport_types,id',
             'amenity_id.*' => 'required|exists:amenities,id'

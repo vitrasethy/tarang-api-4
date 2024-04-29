@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\UserRequest;
 use App\Models\User;
-use Illuminate\Http\Request;
 
 class UserController extends Controller
 {
@@ -12,7 +12,14 @@ class UserController extends Controller
         return User::all();
     }
 
-    public function setAdmin(Request $request)
+    public function setAdmin(UserRequest $request)
     {
+        $request->validated();
+
+        User::find($request->user_id)->update([
+            'is_admin' => 1
+        ]);
+
+        return response()->noContent();
     }
 }
