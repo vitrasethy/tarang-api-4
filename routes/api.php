@@ -19,9 +19,9 @@ Route::middleware(['auth:sanctum'])->get('/user', function (Request $request) {
 });
 
 Route::get('is-login', function () {
-    if (Auth::check()){
+    if (Auth::check()) {
         return response()->json(['message' => 'Authorized']);
-    }else return response()->json(['message' => 'Unauthorized']);
+    } else return response()->json(['message' => 'Unauthorized']);
 });
 
 Route::apiResource('sport-types', SportTypeController::class);

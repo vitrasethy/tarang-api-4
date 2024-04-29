@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\GetAvailablesTimeRequest;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 
@@ -12,9 +13,12 @@ class GetAvailablesTimeController extends Controller
     /**
      * Handle the incoming request.
      */
-    public function __invoke(Request $request)
+    public function __invoke(GetAvailablesTimeRequest $request)
     {
-        $existing_bookings = DB::table('reservations')->select('id', 'start_time', 'end_time')->where('date', '=', $request->date)->get()->toArray();
+
+        $validated = $request->validated();
+
+        $existing_bookings = DB::table('reservations')->select('id', 'start_time', 'end_time')->where('date', '=', $validated['date'])->get()->toArray();
         $new_available_time_slots = [];
 
         if ($existing_bookings) {
@@ -40,7 +44,7 @@ class GetAvailablesTimeController extends Controller
         return response()->json(['available_times' => $new_available_time_slots]);
     }
 
-    function convertTimeToDecimal($timeString)
+    private function convertTimeToDecimal($timeString)
     {
         $hours = date('G', strtotime($timeString));
         $minutes = date('i', strtotime($timeString));
@@ -48,7 +52,7 @@ class GetAvailablesTimeController extends Controller
         return $decimalHours;
     }
 
-    function convertDecimalToTime($decimalTime)
+    private function convertDecimalToTime($decimalTime)
     {
         $hours = floor($decimalTime);
         $minutes = ($decimalTime - $hours) * 60;
@@ -56,7 +60,7 @@ class GetAvailablesTimeController extends Controller
     }
 
     // find available time function
-    function find_available_time($existing_bookings, $times, $duration)
+    private function find_available_time($existing_bookings, $times, $duration)
     {
         $available_slots = [];
         $booked_slots = [];
