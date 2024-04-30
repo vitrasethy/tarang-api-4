@@ -6,6 +6,8 @@ use App\Http\Requests\SportTypeRequest;
 use App\Http\Resources\SportTypeCollection;
 use App\Http\Resources\SportTypeResource;
 use App\Models\SportType;
+use App\Models\Team;
+use App\Models\Venue;
 
 class SportTypeController extends Controller
 {
@@ -41,6 +43,13 @@ class SportTypeController extends Controller
 
     public function destroy(SportType $sportType)
     {
+        if (
+            Team::where('sport_type_id', $sportType)->exists() ||
+            Venue::where('sport_type_id', $sportType)->exists()
+        ) {
+            return response("Can't Delete", 404);
+        }
+
         $sportType->delete();
 
         return response()->noContent();

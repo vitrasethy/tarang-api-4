@@ -14,11 +14,11 @@ class ReservationController extends Controller
     {
         $query = Reservation::with(["venue.sportType", "user", "team"]);
 
-        if ($request->has('pagination')) {
-            return ReservationResource::collection($query->paginate(5));
+        if ($request->has('all')) {
+            return ReservationResource::collection($query->get());
         }
 
-        return ReservationResource::collection($query->get());
+        return ReservationResource::collection($query->paginate(5));
     }
 
 
