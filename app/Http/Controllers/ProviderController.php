@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Provider;
 use App\Models\User;
-use Illuminate\Auth\Events\Registered;
 use Illuminate\Support\Facades\Auth;
 use Laravel\Socialite\Facades\Socialite;
 
@@ -18,17 +18,24 @@ class ProviderController extends Controller
     {
         $providerUser = Socialite::driver($provider)->user();
 
-        $user = User::updateOrCreate(
+        $user = User::firstOrCreate(
+            [
+                "name" => $providerUser->name,
+            ]
+        );
+
+        $provider = Provider::updateOrCreate(
             [
                 "provider_id" => $providerUser->id,
             ],
             [
-                "name" => $providerUser->name,
+                "user_id" => $user->id,
+                "email" => $providerUser->email,
                 "provider_token" => $providerUser->token,
             ]
         );
 
-        Auth::login($user);
+        Auth::login($provider);
 
         return redirect(config('app.frontend_url'));
     }
