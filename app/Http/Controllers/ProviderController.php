@@ -34,7 +34,7 @@ class ProviderController extends Controller
             ]
         );
 
-        Auth::login($provider);
+        Auth::login($user);
 
         return redirect(config('app.frontend_url'));
     }
