@@ -23,6 +23,9 @@ class GetAvailablesTimeRequest extends FormRequest
     {
         return [
             'date' => 'required|date',
+            'start_time' => 'required|date_format:H:i',
+            'duration' => 'required|integer',
+            'sport_type_id' => 'required|exists:sport_types,id'
         ];
     }
 }
