@@ -12,7 +12,6 @@ class Provider extends Model
 
     protected $fillable = [
         'user_id',
-        'email',
         'provider_id',
         'provider_token',
     ];

@@ -18,7 +18,7 @@ class ProviderController extends Controller
     {
         $providerUser = Socialite::driver($provider)->user();
 
-        $user = User::firstOrCreate(
+        $user = User::updateOrCreate(
             [
                 "name" => $providerUser->name,
             ]
@@ -30,7 +30,6 @@ class ProviderController extends Controller
             ],
             [
                 "user_id" => $user->id,
-                "email" => $providerUser->email,
                 "provider_token" => $providerUser->token,
             ]
         );
