@@ -14,16 +14,24 @@ class VenueController extends Controller
 {
     public function index(Request $request)
     {
-        $venues = Venue::with(['sportType', 'amenities'])->when($request, function (Builder $query, $filter) {
-            if ($filter->type)
-                $query->where('sport_type_id', $filter->type)->orWhereHas('sportType', function ($query) use ($filter) {
-                    $query->where('name', $filter->type);
+        $venues = Venue::with(['sportType', 'amenities'])->when($request->filled('type'), function ($query) use ($request) {
+            $type = $request->type;
+            // Group conditions related to sport type to avoid logical errors
+            $query->where(function ($q) use ($type) {
+                $q->where('sport_type_id', $type)
+                    ->orWhereHas('sportType', function ($query) use ($type) {
+                        $query->where('name', $type);
+                    });
             });
-            if ($filter->amenity)
-                $query->where('sport_type_id', $filter->amenity)->orWhereHas('sportType', function ($query) use ($filter) {
-                    $query->where('name', $filter->amenity);
+        })
+            ->when($request->filled('amenity'), function ($query) use ($request) {
+                $amenityId = $request->amenity;
+                // Adjust query to correctly handle many-to-many relationship with amenities
+                $query->whereHas('amenities', function ($query) use ($amenityId) {
+                    $query->where('amenities.id', $amenityId);
                 });
-        })->get();
+            })
+            ->get();
 
         return new VenueCollection($venues);
     }
