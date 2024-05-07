@@ -14,7 +14,7 @@ class VenueController extends Controller
 {
     public function index(Request $request)
     {
-        $venues = Venue::with('sportType')->when($request->type, function (Builder $query, $type) {
+        $venues = Venue::with(['sportType', 'amenities'])->when($request->type, function (Builder $query, $type) {
             $query->where('sport_type_id', $type)->orWhereHas('sportType', function ($query) use ($type) {
                 $query->where('name', $type);
             });

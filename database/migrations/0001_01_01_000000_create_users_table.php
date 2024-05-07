@@ -24,13 +24,13 @@ return new class extends Migration
             $table->timestamps();
         });
 
-        Schema::create('providers', function (Blueprint $table) {
-            $table->id();
-            $table->string('provider_id');
-            $table->string('provider_token')->nullable();
-            $table->foreignId('user_id')->constrained()->cascadeOnDelete();
-            $table->timestamps();
-        });
+//        Schema::create('providers', function (Blueprint $table) {
+//            $table->id();
+//            $table->string('provider_id');
+//            $table->string('provider_token')->nullable();
+//            $table->foreignId('user_id')->constrained()->cascadeOnDelete();
+//            $table->timestamps();
+//        });
 
         Schema::create('password_reset_tokens', function (Blueprint $table) {
             $table->string('email')->primary();
