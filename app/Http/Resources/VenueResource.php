@@ -19,6 +19,7 @@ class VenueResource extends JsonResource
             'description' => $this->description,
 
             'sportTypes' => new SportTypeResource($this->whenLoaded('sportType')),
+            'amenities' => AmenityResource::collection($this->whenLoaded('amenities'))
         ];
     }
 }
