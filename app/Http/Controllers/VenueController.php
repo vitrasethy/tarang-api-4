@@ -14,10 +14,15 @@ class VenueController extends Controller
 {
     public function index(Request $request)
     {
-        $venues = Venue::with(['sportType', 'amenities'])->when($request->type, function (Builder $query, $type) {
-            $query->where('sport_type_id', $type)->orWhereHas('sportType', function ($query) use ($type) {
-                $query->where('name', $type);
+        $venues = Venue::with(['sportType', 'amenities'])->when($request, function (Builder $query, $filter) {
+            if ($filter->type)
+                $query->where('sport_type_id', $filter->type)->orWhereHas('sportType', function ($query) use ($filter) {
+                    $query->where('name', $filter->type);
             });
+            if ($filter->amenity)
+                $query->where('sport_type_id', $filter->amenity)->orWhereHas('sportType', function ($query) use ($filter) {
+                    $query->where('name', $filter->amenity);
+                });
         })->get();
 
         return new VenueCollection($venues);
