@@ -24,6 +24,7 @@ Route::apiResources([
     'match-games' => MatchGameController::class,
     'temp-recruitments' => TempRecruitmentController::class,
     'amenities' => AmenityController::class,
+    'venues' => VenueController::class,
 ]);
 
 Route::get('reservations-user', [ReservationController::class, 'show_user']);
