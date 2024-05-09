@@ -2,7 +2,6 @@
 
 use App\Http\Controllers\AmenityController;
 use App\Http\Controllers\GetAvailablesTimeController;
-use App\Http\Controllers\GetUserController;
 use App\Http\Controllers\MatchGameController;
 use App\Http\Controllers\ReservationController;
 use App\Http\Controllers\SportTypeController;
@@ -14,23 +13,19 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
-Route::middleware(['auth:sanctum'])->get('/user', function (Request $request) {
-    return $request->user();
+Route::middleware(['auth:sanctum'])->get('/user', function () {
+    return Auth::user();
 });
 
-Route::get('is-login', function () {
-    if (Auth::check()) {
-        return response()->json(['message' => 'Authorized']);
-    } else return response()->json(['message' => 'Unauthorized']);
-});
+Route::apiResources([
+    'sport-types' => SportTypeController::class,
+    'reservation' => ReservationController::class,
+    'teams' => TeamController::class,
+    'match-games' => MatchGameController::class,
+    'temp-recruitments' => TempRecruitmentController::class,
+    'amenities' => AmenityController::class,
+]);
 
-Route::apiResource('sport-types', SportTypeController::class);
-Route::apiResource('venues', VenueController::class);
-Route::apiResource('reservation', ReservationController::class);
-Route::apiResource('teams', TeamController::class);
-Route::apiResource('match-games', MatchGameController::class);
-Route::apiResource('temp-recruitments', TempRecruitmentController::class);
-Route::apiResource('amenities', AmenityController::class);
 Route::get('reservations-user', [ReservationController::class, 'show_user']);
-Route::get('users', [UserController::class, "getAllUsers"]);
+Route::get('users', [UserController::class, 'getAllUsers']);
 Route::post('available-time', GetAvailablesTimeController::class);
