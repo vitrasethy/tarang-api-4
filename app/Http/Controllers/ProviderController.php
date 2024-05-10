@@ -20,21 +20,25 @@ class ProviderController extends Controller
 
         $user = User::updateOrCreate(
             [
-                "name" => $providerUser->name,
+                'name' => $providerUser->name,
             ]
         );
 
         $provider = Provider::updateOrCreate(
             [
-                "provider_id" => $providerUser->id,
+                'provider_id' => $providerUser->id,
             ],
             [
-                "user_id" => $user->id,
-                "provider_token" => $providerUser->token,
+                'user_id' => $user->id,
+                'provider_token' => $providerUser->token,
             ]
         );
 
         Auth::login($user);
+
+        if ($user->is_admin === 1) {
+            return redirect(config('app.frontend_url').'/admin');
+        }
 
         return redirect(config('app.frontend_url'));
     }
