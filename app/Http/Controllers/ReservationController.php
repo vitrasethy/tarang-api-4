@@ -7,6 +7,7 @@ use App\Http\Resources\ReservationCollection;
 use App\Http\Resources\ReservationResource;
 use App\Models\Reservation;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class ReservationController extends Controller
 {
@@ -24,7 +25,7 @@ class ReservationController extends Controller
 
     public function store(ReservationRequest $request)
     {
-        Reservation::create([...$request->validated(), "user_id" => 1]);
+        Reservation::create([...$request->validated(), "user_id" => Auth::id()]);
 
         return response()->noContent();
     }

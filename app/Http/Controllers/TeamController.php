@@ -41,7 +41,7 @@ class TeamController extends Controller
     {
         $team->update($request->validated());
 
-        return response()->noContent();
+        return new TeamResource($team);
     }
 
     public function destroy(Team $team)
