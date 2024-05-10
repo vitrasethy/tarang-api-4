@@ -3,8 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\GetAvailablesTimeRequest;
-use Illuminate\Support\Facades\DB;
+
+use App\Models\Reservation;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Carbon\Carbon;
 
 use function Pest\Laravel\json;
 
@@ -18,30 +21,32 @@ class GetAvailablesTimeController extends Controller
 
         $validated = $request->validated();
 
-        $existing_bookings = DB::table('reservations')->select('id', 'start_time', 'end_time')->where('date', '=', $validated['date'])->get()->toArray();
-        $new_available_time_slots = [];
+        $busy_tarang = DB::table('reservations')->select('venue_id')
+            ->where([
+                ['date', '=', $validated["date"]],
+            ])->whereTime('reservations.start_time', '>=', $validated["start_time"])
+            ->whereTime('reservations.end_time', '<', $this->calculateEndTime($validated["start_time"], $validated["duration"]))
+            ->get()->pluck('venue_id')->toArray();
 
-        if ($existing_bookings) {
-            foreach ($existing_bookings as $booking) {
-                $booking->start_time = $this->convertTimeToDecimal($booking->start_time);
-                $booking->end_time = $this->convertTimeToDecimal($booking->end_time);
-            }
+        // $venues = DB::table('venues')->select('id', 'name')
+        //     ->where([
+        //         ['sport_type_id', '=', $validated["sport_type_id"]]
+        //     ])
+        //     ->whereNotIn('id', $busy_tarang)
+        //     ->get()->toArray();
 
-            $times = array_merge(range(6, 22), array_map(function ($x) {
-                return $x + 0.5;
-            }, range(6, 21)));
+        // $venues = DB::table('venues')->select('venues.*')
+        //     ->leftJoin('reservations', function ($join) use ($validated) {
+        //         $join->on('venues.id', '=', 'reservations.venue_id')
+        //             ->where('reservations.date', '=', $validated["date"])
+        //             ->whereTime('reservations.start_time', '<=', $validated["start_time"])
+        //             ->whereTime('reservations.end_time', '>=', $this->calculateEndTime($validated["start_time"], $validated['duration']));
+        //     })
+        //     ->whereNull('reservations.venue_id')
+        //     ->where('venues.sport_type_id', '=', $validated["sport_type_id"])
+        //     ->get();
 
-            $duration = 0.5;  // Each time slot represents half an hour
-
-            $available_time_slots = $this->find_available_time($existing_bookings, $times, $duration);
-
-            // Sort available time slots in ascending order
-            sort($available_time_slots);
-
-            $new_available_time_slots = array_map([$this, 'convertDecimalToTime'], $available_time_slots);
-        }
-
-        return response()->json(['available_times' => $new_available_time_slots]);
+        return response()->json(['venues' => $busy_tarang]);
     }
 
     private function convertTimeToDecimal($timeString)
@@ -59,39 +64,15 @@ class GetAvailablesTimeController extends Controller
         return sprintf('%02d:%02d:00', $hours, $minutes);
     }
 
-    // find available time function
-    private function find_available_time($existing_bookings, $times, $duration)
+    private function calculateEndTime($start_time, $duration)
     {
-        $available_slots = [];
-        $booked_slots = [];
+        // Parse start_time to Carbon instance
+        $start_time = Carbon::createFromFormat('H:i', $start_time);
 
-        // Store existing bookings in a set for efficient lookup
-        foreach ($existing_bookings as $booking) {
-            $start_time = $booking->start_time;
-            $end_time = $booking->end_time;
+        // Calculate end time by adding duration to start time
+        $end_time = $start_time->copy()->addMinutes($duration);
 
-            $current_time = $start_time;
-            while ($current_time < $end_time) {
-                if ($current_time == 6.0) {
-                    $booked_slots[] = $current_time;
-                }
-
-                $current_time += $duration;
-                if ($current_time != $start_time) {
-                    $booked_slots[] = $current_time;
-                }
-            }
-        }
-
-        // Check each time slot in the times array
-        foreach ($times as $time_slot) {
-            if (!in_array($time_slot, $booked_slots)) {
-                $available_slots[] = $time_slot;
-            } elseif (!in_array($time_slot + $duration, $booked_slots)) {
-                $available_slots[] = $time_slot;
-            }
-        }
-
-        return $available_slots;
+        // Format end time as "HH:MM" string
+        return $end_time->format('H:i');
     }
 }
