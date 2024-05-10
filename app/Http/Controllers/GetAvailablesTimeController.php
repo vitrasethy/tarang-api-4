@@ -21,32 +21,23 @@ class GetAvailablesTimeController extends Controller
 
         $validated = $request->validated();
 
-        $busy_tarang = DB::table('reservations')->select('venue_id')
-            ->where([
-                ['date', '=', $validated["date"]],
-            ])->whereTime('reservations.start_time', '>=', $validated["start_time"])
-            ->whereTime('reservations.end_time', '<', $this->calculateEndTime($validated["start_time"], $validated["duration"]))
-            ->get()->pluck('venue_id')->toArray();
+        $start_time = Carbon::parse($validated['start_time'])->format('H:i:s');
+        $end_time = Carbon::parse($this->calculateEndTime($validated['start_time'], $validated['duration']))->format('H:i:s');
 
-        // $venues = DB::table('venues')->select('id', 'name')
-        //     ->where([
-        //         ['sport_type_id', '=', $validated["sport_type_id"]]
-        //     ])
-        //     ->whereNotIn('id', $busy_tarang)
-        //     ->get()->toArray();
+        $busy_tarang = DB::table('reservations')
+            ->whereDate('date', $validated['date'])
+            ->where(function ($query) use ($start_time, $end_time) {
+                $query->where(function ($subQuery) use ($start_time, $end_time) {
+                    $subQuery->where('start_time', '>=', $start_time)
+                        ->whereTime('start_time', '<', $end_time);
+                })
+                    ->orWhere(function ($subQuery) use ($start_time, $end_time) {
+                        $subQuery->whereTime('end_time', '<=', $end_time)
+                            ->whereTime('end_time', '>', $start_time);
+                    });
+            })->get();
 
-        // $venues = DB::table('venues')->select('venues.*')
-        //     ->leftJoin('reservations', function ($join) use ($validated) {
-        //         $join->on('venues.id', '=', 'reservations.venue_id')
-        //             ->where('reservations.date', '=', $validated["date"])
-        //             ->whereTime('reservations.start_time', '<=', $validated["start_time"])
-        //             ->whereTime('reservations.end_time', '>=', $this->calculateEndTime($validated["start_time"], $validated['duration']));
-        //     })
-        //     ->whereNull('reservations.venue_id')
-        //     ->where('venues.sport_type_id', '=', $validated["sport_type_id"])
-        //     ->get();
-
-        return response()->json(['venues' => $busy_tarang]);
+        return response()->json(['unAvailable_Tarang' => $busy_tarang]);
     }
 
     private function convertTimeToDecimal($timeString)
