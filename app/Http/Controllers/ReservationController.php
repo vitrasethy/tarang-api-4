@@ -57,7 +57,7 @@ class ReservationController extends Controller
     public function show_user()
     {
         $reservations = Reservation::with(["venue.sportType", "user", "team"])
-            ->where("user_id", 1)
+            ->where("user_id", auth()->id())
             ->get();
 
         return new ReservationCollection($reservations);
