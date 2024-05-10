@@ -25,7 +25,7 @@ class TeamController extends Controller
     {
         $team = Team::create($request->validated());
 
-        $team->users()->attach(1);
+        $team->users()->attach(auth()->id());
 
         return new TeamResource($team);
     }
