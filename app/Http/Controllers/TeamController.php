@@ -13,12 +13,18 @@ class TeamController extends Controller
 {
     public function index(Request $request)
     {
-        return new TeamCollection(Team::with(['sportType', 'users'])->when($request->type,
-            function (Builder $query, $type) {
+        return new TeamCollection(Team::with(['sportType', 'users'])
+            ->when($request->type, function (Builder $query, $type) {
                 $query->where('sport_type_id', $type)->orWhereHas('sportType', function ($query) use ($type) {
                     $query->where('name', $type);
                 });
-            })->get());
+            })
+            ->when($request->user, function (Builder $query) {
+                $query->whereHas('users', function (Builder $query) {
+                   $query->where('users', auth()->id());
+                });
+            })
+            ->get());
     }
 
     public function store(TeamRequest $request)

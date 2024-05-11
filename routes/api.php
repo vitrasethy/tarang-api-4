@@ -17,16 +17,20 @@ Route::middleware(['auth:sanctum'])->get('/user', function () {
     return Auth::user();
 });
 
-Route::apiResources([
-    'sport-types' => SportTypeController::class,
-    'reservation' => ReservationController::class,
-    'teams' => TeamController::class,
-    'match-games' => MatchGameController::class,
-    'temp-recruitments' => TempRecruitmentController::class,
-    'amenities' => AmenityController::class,
-    'venues' => VenueController::class,
-]);
+Route::middleware('auth:sanctum')->group(function () {
+    Route::apiResources([
+        'sport-types' => SportTypeController::class,
+        'reservation' => ReservationController::class,
+        'teams' => TeamController::class,
+        'match-games' => MatchGameController::class,
+        'temp-recruitments' => TempRecruitmentController::class,
+        'amenities' => AmenityController::class,
+        'venues' => VenueController::class,
+    ]);
+    Route::get('reservations-user', [ReservationController::class, 'show_user']);
+    Route::get('users', [UserController::class, 'getAllUsers']);
+    Route::post('available-time', GetAvailablesTimeController::class);
+});
 
-Route::get('reservations-user', [ReservationController::class, 'show_user']);
-Route::get('users', [UserController::class, 'getAllUsers']);
-Route::post('available-time', GetAvailablesTimeController::class);
+
+

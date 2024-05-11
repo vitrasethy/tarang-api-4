@@ -7,26 +7,24 @@ use App\Http\Resources\VenueCollection;
 use App\Http\Resources\VenueResource;
 use App\Models\Reservation;
 use App\Models\Venue;
-use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 
 class VenueController extends Controller
 {
     public function index(Request $request)
     {
-        $venues = Venue::with(['sportType', 'amenities'])->when($request->filled('type'), function ($query) use ($request) {
-            $type = $request->type;
-            // Group conditions related to sport type to avoid logical errors
-            $query->where(function ($q) use ($type) {
-                $q->where('sport_type_id', $type)
-                    ->orWhereHas('sportType', function ($query) use ($type) {
-                        $query->where('name', $type);
-                    });
-            });
-        })
+        $venues = Venue::with(['sportType', 'amenities'])
+            ->when($request->filled('type'), function ($query) use ($request) {
+                $type = $request->type;
+                $query->where(function ($q) use ($type) {
+                    $q->where('sport_type_id', $type)
+                        ->orWhereHas('sportType', function ($query) use ($type) {
+                            $query->where('name', $type);
+                        });
+                });
+            })
             ->when($request->filled('amenity'), function ($query) use ($request) {
                 $amenityId = $request->amenity;
-                // Adjust query to correctly handle many-to-many relationship with amenities
                 $query->whereHas('amenities', function ($query) use ($amenityId) {
                     $query->where('amenities.id', $amenityId);
                 });

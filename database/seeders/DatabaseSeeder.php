@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\Amenity;
+use App\Models\Reservation;
 use App\Models\SportType;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use App\Models\User;
