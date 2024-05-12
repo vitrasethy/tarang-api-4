@@ -24,7 +24,7 @@ class GetAvailablesTimeController extends Controller
         $start_time = Carbon::parse($validated['start_time'])->format('H:i:s');
         $end_time = Carbon::parse($this->calculateEndTime($validated['start_time'], $validated['duration']))->format('H:i:s');
 
-        $busy_tarang = DB::table('reservations')
+        $busy_tarang = Reservation::with('venue')
             ->whereDate('date', $validated['date'])
             ->where(function ($query) use ($start_time, $end_time) {
                 $query->where(function ($subQuery) use ($start_time, $end_time) {
@@ -37,7 +37,24 @@ class GetAvailablesTimeController extends Controller
                     });
             })->get();
 
-        return response()->json(['unAvailable_Tarang' => $busy_tarang]);
+        $busy_venues = $busy_tarang->pluck('venue_id')->unique();
+
+        $available_tarang = DB::table('venues')
+            ->whereNotIn('id', $busy_venues)
+            ->get();
+
+
+        return response()->json(
+            [
+                'sport_type_id' => $validated['sport_type_id'],
+                'date' => $validated['date'],
+                'start_time' => $start_time,
+                'end_time' => $end_time,
+                'duration' => $validated['duration'],
+                'Unavailable_Tarang' => $busy_tarang,
+                'Available_Tarang' => $available_tarang,
+            ]
+        );
     }
 
     private function convertTimeToDecimal($timeString)
