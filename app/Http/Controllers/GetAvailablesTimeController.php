@@ -14,7 +14,7 @@ use function Pest\Laravel\json;
 class GetAvailablesTimeController extends Controller
 {
     /**
-     * Handle the incoming request.
+     * Get all available Tarang and unavailable Tarang
      */
     public function __invoke(GetAvailablesTimeRequest $request)
     {
@@ -39,7 +39,7 @@ class GetAvailablesTimeController extends Controller
 
         $busy_venues = $busy_tarang->pluck('venue_id')->unique();
 
-        $available_tarang = DB::table('venues')
+        $available_tarang = DB::table('venues')->where('sport_type_id', '=', $validated['sport_type_id'])
             ->whereNotIn('id', $busy_venues)
             ->get();
 
@@ -55,21 +55,6 @@ class GetAvailablesTimeController extends Controller
                 'Available_Tarang' => $available_tarang,
             ]
         );
-    }
-
-    private function convertTimeToDecimal($timeString)
-    {
-        $hours = date('G', strtotime($timeString));
-        $minutes = date('i', strtotime($timeString));
-        $decimalHours = $hours + ($minutes / 60);
-        return $decimalHours;
-    }
-
-    private function convertDecimalToTime($decimalTime)
-    {
-        $hours = floor($decimalTime);
-        $minutes = ($decimalTime - $hours) * 60;
-        return sprintf('%02d:%02d:00', $hours, $minutes);
     }
 
     private function calculateEndTime($start_time, $duration)
