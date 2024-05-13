@@ -18,10 +18,13 @@ class GetAvailablesTimeController extends Controller
 
         $validated = $request->validated();
 
+        // initialize variable parse time using carbon
         $start_time = Carbon::parse($validated['start_time'])->format('H:i:s');
         $end_time = Carbon::parse($this->calculateEndTime($validated['start_time'], $validated['duration']))->format('H:i:s');
         $sport_type_id = $validated['sport_type_id'];
 
+
+        // find the unavailable tarang by reservations
         $busy_tarang = Reservation::with('venue')
             ->whereDate('date', $validated['date'])
             ->whereHas('venue', function ($query) use ($sport_type_id) {
@@ -38,8 +41,10 @@ class GetAvailablesTimeController extends Controller
                     });
             })->get();
 
+        // find unavailable tarang by get all venue id eg. [1,2,3,4]
         $busy_venues = $busy_tarang->pluck('venue_id')->unique();
 
+        // get available tarang from unavailable venue id
         $available_tarang = DB::table('venues')->where('sport_type_id', '=', $validated['sport_type_id'])
             ->whereNotIn('id', $busy_venues)
             ->get();
@@ -58,15 +63,12 @@ class GetAvailablesTimeController extends Controller
         );
     }
 
+    // calculate end time function
     private function calculateEndTime($start_time, $duration)
     {
-        // Parse start_time to Carbon instance
         $start_time = Carbon::createFromFormat('H:i', $start_time);
-
-        // Calculate end time by adding duration to start time
         $end_time = $start_time->copy()->addMinutes($duration);
 
-        // Format end time as "HH:MM" string
         return $end_time->format('H:i');
     }
 }
