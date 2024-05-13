@@ -32,5 +32,7 @@ Route::middleware(['auth:sanctum'])->get('/user', function () {
     Route::post('available-time', GetAvailablesTimeController::class);
 //});
 
+Route::post('login', [UserController::class, 'login']);
+
 
 
