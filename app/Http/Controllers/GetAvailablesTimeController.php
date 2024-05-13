@@ -6,6 +6,7 @@ use App\Http\Requests\GetAvailablesTimeRequest;
 
 use App\Models\Reservation;
 use App\Models\SportType;
+use App\Models\Venue;
 use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
 
@@ -46,7 +47,7 @@ class GetAvailablesTimeController extends Controller
         $busy_venues = $busy_tarang->pluck('venue_id')->unique();
 
         // get available tarang from unavailable venue id
-        $available_tarang = DB::table('venues')->where('sport_type_id', '=', $validated['sport_type_id'])
+        $available_tarang = Venue::with('sportType')->where('sport_type_id', '=', $validated['sport_type_id'])
             ->whereNotIn('id', $busy_venues)
             ->get();
 
