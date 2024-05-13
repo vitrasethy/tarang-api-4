@@ -22,11 +22,12 @@ class GetAvailablesTimeController extends Controller
         $start_time = Carbon::parse($validated['start_time'])->format('H:i:s');
         $end_time = Carbon::parse($this->calculateEndTime($validated['start_time'], $validated['duration']))->format('H:i:s');
         $sport_type_id = $validated['sport_type_id'];
+        $date = Carbon::parse($validated['date'])->toDateString();
 
 
         // find the unavailable tarang by reservations
         $busy_tarang = Reservation::with('venue')
-            ->whereDate('date', $validated['date'])
+            ->whereDate('date', $date)
             ->whereHas('venue', function ($query) use ($sport_type_id) {
                 $query->where('sport_type_id', $sport_type_id);
             })
@@ -53,7 +54,7 @@ class GetAvailablesTimeController extends Controller
         return response()->json(
             [
                 'sport_type_id' => $validated['sport_type_id'],
-                'date' => $validated['date'],
+                'date' => $date,
                 'start_time' => $start_time,
                 'end_time' => $end_time,
                 'duration' => $validated['duration'],
