@@ -5,11 +5,8 @@ namespace App\Http\Controllers;
 use App\Http\Requests\GetAvailablesTimeRequest;
 
 use App\Models\Reservation;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
-
-use function Pest\Laravel\json;
 
 class GetAvailablesTimeController extends Controller
 {
