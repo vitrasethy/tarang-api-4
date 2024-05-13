@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\GetAvailablesTimeRequest;
 
 use App\Models\Reservation;
+use App\Models\SportType;
 use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
 
@@ -15,7 +16,6 @@ class GetAvailablesTimeController extends Controller
      */
     public function __invoke(GetAvailablesTimeRequest $request)
     {
-
         $validated = $request->validated();
 
         // initialize variable parse time using carbon
@@ -53,7 +53,7 @@ class GetAvailablesTimeController extends Controller
 
         return response()->json(
             [
-                'sport_type_id' => $validated['sport_type_id'],
+                'sport_type_id' => SportType::find($validated['sport_type_id']),
                 'date' => $date,
                 'start_time' => $start_time,
                 'end_time' => $end_time,
