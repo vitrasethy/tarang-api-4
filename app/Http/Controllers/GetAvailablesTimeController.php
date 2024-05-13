@@ -57,8 +57,8 @@ class GetAvailablesTimeController extends Controller
                 'start_time' => $start_time,
                 'end_time' => $end_time,
                 'duration' => $validated['duration'],
-                'Unavailable_Tarang' => $busy_tarang,
-                'Available_Tarang' => $available_tarang,
+                'unavailable_tarang' => $busy_tarang,
+                'available_tarang' => $available_tarang,
             ]
         );
     }
