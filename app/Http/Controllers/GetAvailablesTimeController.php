@@ -20,9 +20,13 @@ class GetAvailablesTimeController extends Controller
 
         $start_time = Carbon::parse($validated['start_time'])->format('H:i:s');
         $end_time = Carbon::parse($this->calculateEndTime($validated['start_time'], $validated['duration']))->format('H:i:s');
+        $sport_type_id = $validated['sport_type_id'];
 
         $busy_tarang = Reservation::with('venue')
             ->whereDate('date', $validated['date'])
+            ->whereHas('venue', function ($query) use ($sport_type_id) {
+                $query->where('sport_type_id', $sport_type_id);
+            })
             ->where(function ($query) use ($start_time, $end_time) {
                 $query->where(function ($subQuery) use ($start_time, $end_time) {
                     $subQuery->where('start_time', '>=', $start_time)
