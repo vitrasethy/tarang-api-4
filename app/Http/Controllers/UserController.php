@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\Auth\LoginRequest;
 use App\Http\Requests\UserRequest;
 use App\Models\User;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\ValidationException;
 
@@ -41,5 +42,27 @@ class UserController extends Controller
         return response()->json([
             'token' => $token->plainTextToken,
         ]);
+    }
+
+    public function verify(Request $request)
+    {
+        $validated = $request->validate([
+            'code' => 'required|integer|digits:6',
+            'user_id' => 'required|exists:users,id',
+        ]);
+
+        $user = User::find($validated['user_id']);
+
+        if ($user->code !== $validated['code']) {
+            return response('Code is not valid.', 401);
+        }
+
+        $user->update([
+            'is_verified' => 1
+        ]);
+
+        Auth::login($user);
+
+        return response()->noContent();
     }
 }

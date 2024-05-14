@@ -13,18 +13,28 @@ class TeamController extends Controller
 {
     public function index(Request $request)
     {
-        return new TeamCollection(Team::with(['sportType', 'users'])
-            ->when($request->type, function (Builder $query, $type) {
-                $query->where('sport_type_id', $type)->orWhereHas('sportType', function ($query) use ($type) {
+        $query = Team::with(['sportType', 'users']);
+
+        if ($request->type) {
+            $type = $request->type;
+            $query
+                ->where('sport_type_id', $type)
+                ->orWhereHas('sportType', function ($query) use ($type) {
                     $query->where('name', $type);
                 });
-            })
-            ->when($request->user, function (Builder $query) {
-                $query->whereHas('users', function (Builder $query) {
-                   $query->where('users', auth()->id());
-                });
-            })
-            ->get());
+        }
+
+        if ($request->user) {
+            $query->whereHas('users', function (Builder $query) {
+                $query->where('users', auth()->id());
+            });
+        }
+
+        $teams = $request->has('pagination')
+            ? $query->paginate(7)
+            : $query->get();
+
+        return new TeamCollection($teams);
     }
 
     public function store(TeamRequest $request)

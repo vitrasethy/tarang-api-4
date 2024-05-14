@@ -13,23 +13,28 @@ class VenueController extends Controller
 {
     public function index(Request $request)
     {
-        $venues = Venue::with(['sportType', 'amenities'])
-            ->when($request->filled('type'), function ($query) use ($request) {
-                $type = $request->type;
-                $query->where(function ($q) use ($type) {
-                    $q->where('sport_type_id', $type)
-                        ->orWhereHas('sportType', function ($query) use ($type) {
-                            $query->where('name', $type);
-                        });
-                });
-            })
-            ->when($request->filled('amenity'), function ($query) use ($request) {
-                $amenityId = $request->amenity;
-                $query->whereHas('amenities', function ($query) use ($amenityId) {
-                    $query->where('amenities.id', $amenityId);
-                });
-            })
-            ->get();
+        $query = Venue::with(['sportType', 'amenities']);
+
+        if ($request->filled('type')) {
+            $type = $request->type;
+            $query->where(function ($q) use ($type) {
+                $q->where('sport_type_id', $type)
+                    ->orWhereHas('sportType', function ($query) use ($type) {
+                        $query->where('name', $type);
+                    });
+            });
+        }
+
+        if ($request->filled('amenity')) {
+            $amenityId = $request->amenity;
+            $query->whereHas('amenities', function ($query) use ($amenityId) {
+                $query->where('amenities.id', $amenityId);
+            });
+        }
+
+        $venues = $request->has('pagination')
+            ? $query->paginate(7)
+            : $query->get();
 
         return new VenueCollection($venues);
     }

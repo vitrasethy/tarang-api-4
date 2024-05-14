@@ -17,6 +17,8 @@ Route::middleware(['auth:sanctum'])->get('/user', function () {
     return Auth::user();
 });
 
+Route::post('verify-user', [UserController::class, 'verify']);
+
 //Route::middleware('auth:sanctum')->group(function () {
     Route::apiResources([
         'sport-types' => SportTypeController::class,
@@ -33,6 +35,7 @@ Route::middleware(['auth:sanctum'])->get('/user', function () {
 //});
 
 Route::post('login', [UserController::class, 'login']);
+
 
 
 
