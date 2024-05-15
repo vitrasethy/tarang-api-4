@@ -21,7 +21,7 @@ class GetAvailablesTimeController extends Controller
 
         // initialize variable parse time using carbon
         $start_time = Carbon::parse($validated['start_time'])->format('H:i:s');
-        $end_time = Carbon::parse($this->calculateEndTime($validated['start_time'], $validated['duration']))->format('H:i:s');
+        $end_time = Carbon::parse($validated['end_time'])->format('H:i:s');
         $sport_type_id = $validated['sport_type_id'];
         $date = Carbon::parse($validated['date'])->toDateString();
 
@@ -65,12 +65,12 @@ class GetAvailablesTimeController extends Controller
         );
     }
 
-    // calculate end time function
-    private function calculateEndTime($start_time, $duration)
-    {
-        $start_time = Carbon::createFromFormat('H:i', $start_time);
-        $end_time = $start_time->copy()->addMinutes($duration);
-
-        return $end_time->format('H:i');
-    }
+//    // calculate end time function
+//    private function calculateEndTime($start_time, $duration)
+//    {
+//        $start_time = Carbon::createFromFormat('H:i', $start_time);
+//        $end_time = $start_time->copy()->addMinutes($duration);
+//
+//        return $end_time->format('H:i');
+//    }
 }
