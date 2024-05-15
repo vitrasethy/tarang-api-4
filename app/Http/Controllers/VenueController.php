@@ -32,9 +32,9 @@ class VenueController extends Controller
             });
         }
 
-        $venues = $request->has('pagination')
-            ? $query->paginate(7)
-            : $query->get();
+        $venues = $request->has('all')
+            ? $query->get()
+            : $query->paginate(5);
 
         return new VenueCollection($venues);
     }

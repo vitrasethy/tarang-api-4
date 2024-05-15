@@ -24,15 +24,16 @@ class TeamController extends Controller
                 });
         }
 
-        if ($request->user) {
+        if ($request->has('user')) {
             $query->whereHas('users', function (Builder $query) {
-                $query->where('users', auth()->id());
+                $query->where('users.id', auth()->id());
             });
         }
 
-        $teams = $request->has('pagination')
-            ? $query->paginate(7)
-            : $query->get();
+        // $teams = $request->has('pagination')
+        //     ? $query->paginate(5)`
+        //     : $query->get();
+        $teams = $query->paginate(5);
 
         return new TeamCollection($teams);
     }
