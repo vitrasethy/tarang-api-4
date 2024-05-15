@@ -58,7 +58,6 @@ class GetAvailablesTimeController extends Controller
                 'date' => $date,
                 'start_time' => $start_time,
                 'end_time' => $end_time,
-                'duration' => $validated['duration'],
                 'unavailable_tarang' => $busy_tarang,
                 'available_tarang' => $available_tarang,
             ]
