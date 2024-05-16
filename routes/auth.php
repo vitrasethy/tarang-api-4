@@ -37,4 +37,4 @@ Route::post('/logout', [AuthenticatedSessionController::class, 'destroy'])
                 ->middleware('auth')
                 ->name('logout');
 
-Route::post('verify-user', [UserController::class, 'verify']);
+Route::post('verify-phone', [UserController::class, 'verify']);
