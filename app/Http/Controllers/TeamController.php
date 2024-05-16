@@ -8,6 +8,7 @@ use App\Http\Resources\TeamResource;
 use App\Models\Team;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
 
 class TeamController extends Controller
 {
@@ -38,6 +39,8 @@ class TeamController extends Controller
 
     public function store(TeamRequest $request)
     {
+        Gate::authorize('create');
+
         $team = Team::create($request->validated());
 
         $team->users()->attach(auth()->id());

@@ -6,13 +6,13 @@ use App\Http\Controllers\MatchGameController;
 use App\Http\Controllers\ReservationController;
 use App\Http\Controllers\SportTypeController;
 use App\Http\Controllers\TeamController;
-use App\Http\Controllers\TempRecruitmentController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\VenueController;
+use App\Models\User;
 use Illuminate\Support\Facades\Route;
 
 Route::middleware(['auth:sanctum'])->get('/user', function () {
-    return auth()->user();
+    return User::with('teams')->where('id', auth()->id())->first();
 });
 
 Route::apiResources([
@@ -20,7 +20,6 @@ Route::apiResources([
     'reservation' => ReservationController::class,
     'teams' => TeamController::class,
     'match-games' => MatchGameController::class,
-    'temp-recruitments' => TempRecruitmentController::class,
     'amenities' => AmenityController::class,
     'venues' => VenueController::class,
 ]);
