@@ -8,7 +8,7 @@ Route::get('/', function () {
     return ['Laravel' => app()->version()];
 });
 
-Route::post('verify-phone', [UserController::class, 'verify']);
+
 Route::get('/auth/{provider}/redirect', [ProviderController::class, 'redirect']);
 Route::get('/auth/{provider}/callback', [ProviderController::class, 'callback']);
 

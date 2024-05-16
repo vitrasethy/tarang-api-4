@@ -27,6 +27,7 @@ Route::apiResources([
 Route::get('reservations-user', [ReservationController::class, 'show_user']);
 Route::get('users', [UserController::class, 'getAllUsers']);
 Route::post('available-time', GetAvailablesTimeController::class);
+Route::post('verify-phone', [UserController::class, 'verify']);
 
 // Mobile Endpoint
 Route::post('login', [UserController::class, 'login']);
