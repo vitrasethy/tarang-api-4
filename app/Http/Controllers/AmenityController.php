@@ -11,12 +11,18 @@ class AmenityController extends Controller
 {
     public function index()
     {
-        return new AmenityCollection(Amenity::with('venues')->get());
+        $amenities = Amenity::with('venues')->get();
+
+        return new AmenityCollection($amenities);
     }
 
     public function store(AmenityRequest $request)
     {
-        return new AmenityResource(Amenity::create($request->validated()));
+        $validated = $request->validated();
+
+        $amenities = Amenity::create($validated);
+
+        return new AmenityResource($amenities);
     }
 
     public function show(Amenity $amenity)
@@ -26,7 +32,9 @@ class AmenityController extends Controller
 
     public function update(AmenityRequest $request, Amenity $amenity)
     {
-        $amenity->update($request->validated());
+        $validated = $request->validated();
+
+        $amenity->update($validated);
 
         return new AmenityResource($amenity);
     }

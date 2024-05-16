@@ -24,7 +24,7 @@ class ProviderController extends Controller
             ]
         );
 
-        $provider = Provider::updateOrCreate(
+        Provider::updateOrCreate(
             [
                 'provider_id' => $providerUser->id,
             ],

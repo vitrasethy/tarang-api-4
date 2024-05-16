@@ -11,12 +11,16 @@ class MatchGameController extends Controller
 {
     public function index()
     {
-        return new MatchGameCollection(MatchGame::with(['reservation', 'team'])->get());
+        $matchGames = MatchGame::with(['reservation', 'team'])->get();
+
+        return new MatchGameCollection($matchGames);
     }
 
     public function store(MatchGameRequest $request)
     {
-        MatchGame::create($request->validated());
+        $validated = $request->validated();
+
+        MatchGame::create($validated);
 
         return response()->noContent();
     }
@@ -30,7 +34,9 @@ class MatchGameController extends Controller
 
     public function update(MatchGameRequest $request, MatchGame $matchGame)
     {
-        $matchGame->update($request->validated());
+        $validated = $request->validated();
+
+        $matchGame->update($validated);
 
         return response()->noContent();
     }

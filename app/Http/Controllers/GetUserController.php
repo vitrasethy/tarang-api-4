@@ -14,6 +14,8 @@ class GetUserController extends Controller
 {
     public function __invoke()
     {
+
+
         $user = [
             'user' => new UserResource(User::find(auth()->id())),
             'reservations' => ReservationResource::collection(Reservation::where('user_id', auth()->id())->get()),

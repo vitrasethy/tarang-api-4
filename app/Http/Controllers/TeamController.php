@@ -15,10 +15,9 @@ class TeamController extends Controller
     {
         $query = Team::with(['sportType', 'users']);
 
-        if ($request->type) {
+        if ($request->filled('type')) {
             $type = $request->type;
-            $query
-                ->where('sport_type_id', $type)
+            $query->where('sport_type_id', $type)
                 ->orWhereHas('sportType', function ($query) use ($type) {
                     $query->where('name', $type);
                 });
@@ -30,10 +29,9 @@ class TeamController extends Controller
             });
         }
 
-        // $teams = $request->has('pagination')
-        //     ? $query->paginate(5)`
-        //     : $query->get();
-        $teams = $query->paginate(5);
+        $teams = $request->has('all')
+            ? $query->get()
+            : $query->paginate(5);
 
         return new TeamCollection($teams);
     }

@@ -54,11 +54,14 @@ class ReservationController extends Controller
         return response()->noContent();
     }
 
-    public function show_user()
+    public function show_user(Request $request)
     {
-        $reservations = Reservation::with(["venue.sportType", "user", "team"])
-            ->where("user_id", auth()->id())
-            ->get();
+        $query = Reservation::with(["venue.sportType", "user", "team"])
+            ->where("user_id", auth()->id());
+
+        $reservations = $request->has('all')
+            ? $query->get()
+            : $query->paginate(5);
 
         return new ReservationCollection($reservations);
     }
