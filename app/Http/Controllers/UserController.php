@@ -53,7 +53,7 @@ class UserController extends Controller
 
         $user = User::find($validated['user_id']);
 
-        if ($user->code !== $validated['code']) {
+        if ($user->code != $validated['code']) {
             return response('Code is not valid.', 401);
         }
 
