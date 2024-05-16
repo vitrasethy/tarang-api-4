@@ -40,6 +40,8 @@ class RegisteredUserController extends Controller
 
         event(new Registered($user, $code));
 
+
+
         return $user;
     }
 }
