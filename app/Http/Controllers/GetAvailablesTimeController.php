@@ -3,11 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\GetAvailablesTimeRequest;
-
 use App\Models\Reservation;
 use App\Models\SportType;
 use App\Models\Venue;
-use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
 
 class GetAvailablesTimeController extends Controller
@@ -24,7 +22,6 @@ class GetAvailablesTimeController extends Controller
         $end_time = Carbon::parse($validated['end_time'])->format('H:i:s');
         $sport_type_id = $validated['sport_type_id'];
         $date = Carbon::parse($validated['date'])->toDateString();
-
 
         // find the unavailable tarang by reservations
         $busy_tarang = Reservation::with('venue')
@@ -51,7 +48,6 @@ class GetAvailablesTimeController extends Controller
             ->whereNotIn('id', $busy_venues)
             ->get();
 
-
         return response()->json(
             [
                 'sport_type_id' => SportType::find($validated['sport_type_id']),
@@ -59,17 +55,24 @@ class GetAvailablesTimeController extends Controller
                 'start_time' => $start_time,
                 'end_time' => $end_time,
                 'unavailable_tarang' => $busy_tarang,
-                'available_tarang' => $available_tarang,
+                'available_tarang' => $available_tarang->map(function ($tarang) {
+                    return [
+                        'id' => $tarang->id,
+                        'start_time' => Carbon::parse($tarang->start_time)->format('H:i'),
+                        'end_time' => Carbon::parse($tarang->end_time)->format('H:i'),
+                        'venue' => $tarang->venue,
+                    ];
+                }),
             ]
         );
     }
 
-//    // calculate end time function
-//    private function calculateEndTime($start_time, $duration)
-//    {
-//        $start_time = Carbon::createFromFormat('H:i', $start_time);
-//        $end_time = $start_time->copy()->addMinutes($duration);
-//
-//        return $end_time->format('H:i');
-//    }
+    //    // calculate end time function
+    //    private function calculateEndTime($start_time, $duration)
+    //    {
+    //        $start_time = Carbon::createFromFormat('H:i', $start_time);
+    //        $end_time = $start_time->copy()->addMinutes($duration);
+    //
+    //        return $end_time->format('H:i');
+    //    }
 }
