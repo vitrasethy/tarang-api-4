@@ -15,10 +15,10 @@ class ReservationController extends Controller
         $query = Reservation::with(["venue.sportType", "user", "team"]);
 
         if ($request->has('all')) {
-            return ReservationResource::collection($query->get());
+            return ReservationResource::collection($query->latest()->get());
         }
 
-        return ReservationResource::collection($query->paginate(5));
+        return ReservationResource::collection($query->latest()->paginate(5));
     }
 
 
@@ -57,7 +57,7 @@ class ReservationController extends Controller
     public function show_user(Request $request)
     {
         $query = Reservation::with(["venue.sportType", "user", "team"])
-            ->where("user_id", auth()->id());
+            ->where("user_id", auth()->id())->latest();
 
         $reservations = $request->has('all')
             ? $query->get()
