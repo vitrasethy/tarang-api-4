@@ -52,17 +52,10 @@ class GetAvailablesTimeController extends Controller
             [
                 'sport_type_id' => SportType::find($validated['sport_type_id']),
                 'date' => $date,
-                'start_time' => $start_time,
-                'end_time' => $end_time,
+                'start_time' => Carbon::parse($start_time)->format('H:i'),
+                'end_time' => Carbon::parse($end_time)->format('H:i'),
                 'unavailable_tarang' => $busy_tarang,
-                'available_tarang' => $available_tarang->map(function ($tarang) {
-                    return [
-                        'id' => $tarang->id,
-                        'start_time' => Carbon::parse($tarang->start_time)->format('H:i'),
-                        'end_time' => Carbon::parse($tarang->end_time)->format('H:i'),
-                        'venue' => $tarang->venue,
-                    ];
-                }),
+                'available_tarang' => $available_tarang,
             ]
         );
     }
