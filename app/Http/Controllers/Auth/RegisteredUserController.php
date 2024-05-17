@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
+use App\Notifications\SendSMS;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -38,7 +39,7 @@ class RegisteredUserController extends Controller
             'code' => $code,
         ]);
 
-        event(new Registered($user, $code));
+        $user->notify(new SendSMS($code));
 
         return response()->json($user);
     }

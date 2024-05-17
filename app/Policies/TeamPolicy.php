@@ -5,6 +5,7 @@ namespace App\Policies;
 use App\Models\Team;
 use App\Models\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
+use Illuminate\Database\Eloquent\Builder;
 
 class TeamPolicy
 {
@@ -21,7 +22,9 @@ class TeamPolicy
 
     public function create(User $user): bool
     {
-        $teams = Team::where('user_id', $user->id)->count();
+        $teams = Team::with('users')->whereHas('users', function (Builder $query) {
+            $query->where('users.id', auth()->id());
+        })->count();
 
         return $teams <= 2;
     }
