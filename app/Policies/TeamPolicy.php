@@ -6,6 +6,7 @@ use App\Models\Team;
 use App\Models\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Auth\Access\Response;
 
 class TeamPolicy
 {
@@ -20,13 +21,15 @@ class TeamPolicy
     {
     }
 
-    public function create(User $user): bool
+    public function create(User $user): Response
     {
         $teams = Team::with('users')->whereHas('users', function (Builder $query) {
             $query->where('users.id', auth()->id());
         })->count();
 
-        return $teams <= 2;
+        return $teams <= 2
+            ? Response::allow()
+            : Response::deny('You already create 2 teams. No more.');
     }
 
     public function update(User $user, Team $team)
