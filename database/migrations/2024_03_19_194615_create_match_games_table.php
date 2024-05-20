@@ -4,7 +4,8 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration {
+return new class extends Migration
+{
     public function up(): void
     {
         Schema::create('match_games', function (Blueprint $table) {
@@ -13,6 +14,7 @@ return new class extends Migration {
             $table->foreignId('reservation_id')->constrained()->cascadeOnDelete();
             $table->foreignId('team1_id')->constrained('teams')->cascadeOnDelete();
             $table->foreignId('team2_id')->nullable()->constrained('teams')->cascadeOnDelete();
+            $table->string('team2_phone')->nullable();
             $table->text('comment')->nullable();
             $table->softDeletes();
             $table->timestamps();

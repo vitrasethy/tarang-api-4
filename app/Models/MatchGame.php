@@ -14,6 +14,7 @@ class MatchGame extends Model
         'is_accepted',
         'team1_id',
         'team2_id',
+        'team2_phone',
         'comment',
         'reservation_id',
     ];

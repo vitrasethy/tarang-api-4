@@ -18,11 +18,10 @@ class MatchGameResource extends JsonResource
             "is_accepted" => $this->is_accepted,
             "comment" => $this->comment,
 
-            "reservation" => new ReservationResource(
-                $this->whenLoaded("reservation")
-            ),
+            "reservation" => new ReservationResource($this->whenLoaded("reservation")),
             "team1" => new TeamResource($this->whenLoaded("team1")),
             "team2" => new TeamResource($this->whenLoaded("team2")),
+            'team2_phone' => $this->team2_phone,
         ];
     }
 }
