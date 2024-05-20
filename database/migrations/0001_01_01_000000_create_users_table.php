@@ -16,9 +16,9 @@ return new class extends Migration
             $table->string('name');
             $table->string('phone')->unique()->nullable();
             $table->integer('code')->nullable();
-            $table->boolean('is_verified')->default(false);
+            $table->tinyInteger('is_verified')->default(false);
             $table->string('password')->nullable();
-            $table->boolean('is_admin')->default(false);
+            $table->tinyInteger('is_admin')->default(false);
             $table->string('photo')->nullable();
             $table->rememberToken();
             $table->timestamps();

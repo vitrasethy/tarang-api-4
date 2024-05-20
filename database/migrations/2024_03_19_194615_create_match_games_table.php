@@ -12,7 +12,7 @@ return new class extends Migration {
             $table->boolean('is_accepted')->default(false);
             $table->foreignId('reservation_id')->constrained()->cascadeOnDelete();
             $table->foreignId('team1_id')->constrained('teams')->cascadeOnDelete();
-            $table->foreignId('team2_id')->constrained('teams')->cascadeOnDelete();
+            $table->foreignId('team2_id')->nullable()->constrained('teams')->cascadeOnDelete();
             $table->text('comment')->nullable();
             $table->softDeletes();
             $table->timestamps();

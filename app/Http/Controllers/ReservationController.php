@@ -6,7 +6,9 @@ use App\Http\Requests\ReservationRequest;
 use App\Http\Resources\ReservationCollection;
 use App\Http\Resources\ReservationResource;
 use App\Models\Reservation;
+use App\Notifications\SendReminderSMS;
 use Illuminate\Http\Request;
+use Illuminate\Support\Carbon;
 
 class ReservationController extends Controller
 {
@@ -21,12 +23,21 @@ class ReservationController extends Controller
         return ReservationResource::collection($query->latest()->paginate(5));
     }
 
-
     public function store(ReservationRequest $request)
     {
-        Reservation::create([...$request->validated(), "user_id" => auth()->id()]);
+        $reservation = Reservation::create([
+            ...$request->validated(),
+            "user_id" => auth()->id()
+        ]);
 
-        return response()->noContent();
+        $user = auth()->user();
+
+        // $delay = Carbon::parse("$request->input('date') $request->input('start_time')")->subHour();
+        // $user->notify(
+        //     new SendReminderSMS($request->input('start_time'))
+        // )->delay($delay);
+
+        return new ReservationResource($reservation);
     }
 
     public function show(Reservation $reservation)

@@ -6,7 +6,8 @@ use App\Models\MatchGame;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-/** @mixin MatchGame
+/**
+ * @mixin MatchGame
  * @property mixed $team1
  * @property mixed $team2
  */
