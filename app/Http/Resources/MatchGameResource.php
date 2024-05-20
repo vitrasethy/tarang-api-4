@@ -21,8 +21,8 @@ class MatchGameResource extends JsonResource
             'comment' => $this->comment,
 
             'reservation' => new ReservationResource($this->whenLoaded('reservation')),
-            'team1' => new TeamResource($this->whenLoaded('team', $this->team1)),
-            'team2' => new TeamResource($this->whenLoaded('team', $this->team2)),
+            'team1' => new TeamResource($this->whenLoaded('team', $this->team1_id)),
+            'team2' => new TeamResource($this->whenLoaded('team', $this->team2_id)),
         ];
     }
 }
