@@ -23,8 +23,13 @@ class MatchGame extends Model
         return $this->belongsTo(Reservation::class);
     }
 
-    public function team(): BelongsTo
+    public function team1(): BelongsTo
     {
-        return $this->belongsTo(Team::class);
+        return $this->belongsTo(Team::class, 'team1_id');
+    }
+
+    public function team2(): BelongsTo
+    {
+        return $this->belongsTo(Team::class, 'team2_id');
     }
 }
