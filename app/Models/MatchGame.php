@@ -15,6 +15,7 @@ class MatchGame extends Model
         'team1_id',
         'team2_id',
         'comment',
+        'reservation_id',
     ];
 
     public function reservation(): BelongsTo
