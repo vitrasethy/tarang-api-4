@@ -9,9 +9,9 @@ class MatchGameRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'is_accepted' => ['boolean'],
+            'is_accepted' => ['sometimes', 'boolean'],
             'team1_id' => ['required', 'exists:teams,id'],
-            'team2_id' => ['required', 'exists:team,id'],
+            'team2_id' => ['sometimes', 'exists:team,id'],
             'reservation_id' => 'required|exists:reservations,id',
             'comment' => 'nullable|string'
         ];
