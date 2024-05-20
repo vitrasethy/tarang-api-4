@@ -8,21 +8,21 @@ use Illuminate\Http\Resources\Json\JsonResource;
 
 /**
  * @mixin MatchGame
- * @property mixed $team1
- * @property mixed $team2
  */
 class MatchGameResource extends JsonResource
 {
     public function toArray(Request $request): array
     {
         return [
-            'id' => $this->id,
-            'is_accepted' => $this->is_accepted,
-            'comment' => $this->comment,
+            "id" => $this->id,
+            "is_accepted" => $this->is_accepted,
+            "comment" => $this->comment,
 
-            'reservation' => new ReservationResource($this->whenLoaded('reservation')),
-            'team1' => new TeamResource($this->whenLoaded('team1')),
-            'team2' => new TeamResource($this->whenLoaded('team2')),
+            "reservation" => new ReservationResource(
+                $this->whenLoaded("reservation")
+            ),
+            "team1" => new TeamResource($this->whenLoaded("team1")),
+            "team2" => new TeamResource($this->whenLoaded("team2")),
         ];
     }
 }
