@@ -5,12 +5,33 @@ namespace App\Http\Controllers;
 use App\Http\Requests\MatchGameRequest;
 use App\Http\Resources\MatchGameResource;
 use App\Models\MatchGame;
+use Illuminate\Contracts\Database\Eloquent\Builder;
+use Illuminate\Http\Request;
 
 class MatchGameController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $matchGames = MatchGame::with(['reservation.venue', 'team1.sportType', 'team2.sportType'])->get();
+        $matchGames = MatchGame::with([
+            'reservation.venue',
+            'team1.sportType',
+            'team1.users',
+            'team2.users',
+            'team2.sportType'
+        ]);
+
+        if ($request->has('user')) {
+            $matchGames->whereHas('team1.users', function (Builder $builder) {
+                $builder->where('team1.users.id', auth()->id());
+            })->orWhereHas('team2.users', function (Builder $builder) {
+                $builder->where('team2.users.id', auth()->id());
+            })->get();
+        } else if ($request->filled('type')) {
+            $matchGames->whereHas('team1.sportType', function (Builder $builder, $type) {
+                $builder->where('team1.sportType.name', $type);
+            })->get();
+        } else
+            $matchGames->paginate(5);
 
         return MatchGameResource::collection($matchGames);
     }
