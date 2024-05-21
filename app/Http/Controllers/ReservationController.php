@@ -20,10 +20,6 @@ class ReservationController extends Controller
             return ReservationResource::collection($query->latest()->get());
         }
 
-        if ($request->has('mobile')) {
-            return ReservationResource::collection(Reservation::latest()->get());
-        }
-
         return ReservationResource::collection($query->latest()->paginate(5));
     }
 

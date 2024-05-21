@@ -22,9 +22,9 @@ class MatchGameController extends Controller
 
         if ($request->has('user')) {
             $matchGames->whereHas('team1.users', function (Builder $builder) {
-                $builder->where('team1.users.id', auth()->id());
+                $builder->where('users.id', auth()->id());
             })->orWhereHas('team2.users', function (Builder $builder) {
-                $builder->where('team2.users.id', auth()->id());
+                $builder->where('users.id', auth()->id());
             })->get();
             return MatchGameResource::collection($matchGames);
         }
