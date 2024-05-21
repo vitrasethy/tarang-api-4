@@ -10,7 +10,7 @@ class SendReminderSMS extends Notification
 {
     use Queueable;
 
-    public function __construct(private string $time)
+    public function __construct(private readonly string $time)
     {
     }
 
@@ -23,11 +23,13 @@ class SendReminderSMS extends Notification
     {
         return ['vonage'];
     }
-    
+
     public function toVonage(): VonageMessage
     {
-        return (new VonageMessage)->content('This is a friendly reminder that your reservation with us is scheduled
-            for one hour from now at '.$this->time.'.
-            We look forward to welcoming you and providing an exceptional experience.');
+        return (new VonageMessage)->content('
+            This is a friendly reminder that your reservation with us is scheduled
+            for one hour from now at ' . $this->time . '.
+            We look forward to welcoming you and providing an exceptional experience.
+        ');
     }
 }
