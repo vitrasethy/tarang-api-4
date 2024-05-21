@@ -17,6 +17,7 @@ class TeamResource extends JsonResource
             'logo' => $this->logo,
 
             'sportType' => new SportTypeResource($this->whenLoaded('sportType')),
+            'users' => UserResource::collection($this->whenLoaded('users')),
         ];
     }
 }
