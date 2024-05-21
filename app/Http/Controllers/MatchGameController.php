@@ -20,21 +20,21 @@ class MatchGameController extends Controller
             'team2.sportType'
         ]);
 
-        if ($request->has('user')) {
-            $matchGames->whereHas('team1.users', function (Builder $builder) {
-                $builder->where('team1.users.id', auth()->id());
-            })->orWhereHas('team2.users', function (Builder $builder) {
-                $builder->where('team2.users.id', auth()->id());
-            })->get();
-            return MatchGameResource::collection($matchGames);
-        }
+        // if ($request->has('user')) {
+        //     $matchGames->whereHas('team1.users', function (Builder $builder) {
+        //         $builder->where('team1.users.id', auth()->id());
+        //     })->orWhereHas('team2.users', function (Builder $builder) {
+        //         $builder->where('team2.users.id', auth()->id());
+        //     })->get();
+        //     return MatchGameResource::collection($matchGames);
+        // }
 
-        if ($request->filled('type')) {
-            $matchGames->whereHas('team1.sportType', function (Builder $builder, $type) {
-                $builder->where('team1.sportType.name', $type);
-            })->get();
-            return MatchGameResource::collection($matchGames);
-        }
+        // if ($request->filled('type')) {
+        //     $matchGames->whereHas('team1.sportType', function (Builder $builder, $type) {
+        //         $builder->where('team1.sportType.name', $type);
+        //     })->get();
+        //     return MatchGameResource::collection($matchGames);
+        // }
 
         $matchGames->paginate(5);
 
