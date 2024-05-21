@@ -15,8 +15,8 @@ class MatchGameController extends Controller
         $matchGames = MatchGame::with([
             'reservation.venue',
             'team1.sportType',
-            'team1.users',
-            'team2.users',
+            // 'team1.users',
+            // 'team2.users',
             'team2.sportType'
         ]);
 
