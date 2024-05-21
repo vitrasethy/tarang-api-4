@@ -26,12 +26,17 @@ class MatchGameController extends Controller
             })->orWhereHas('team2.users', function (Builder $builder) {
                 $builder->where('team2.users.id', auth()->id());
             })->get();
-        } else if ($request->filled('type')) {
+            return MatchGameResource::collection($matchGames);
+        }
+
+        if ($request->filled('type')) {
             $matchGames->whereHas('team1.sportType', function (Builder $builder, $type) {
                 $builder->where('team1.sportType.name', $type);
             })->get();
-        } else
-            $matchGames->paginate(5);
+            return MatchGameResource::collection($matchGames);
+        }
+
+        $matchGames->paginate(5);
 
         return MatchGameResource::collection($matchGames);
     }
