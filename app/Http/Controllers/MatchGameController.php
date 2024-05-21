@@ -38,7 +38,8 @@ class MatchGameController extends Controller
 
         $matchGames->paginate(5);
 
-        return MatchGameResource::collection($matchGames);
+        // return MatchGameResource::collection($matchGames);
+        return response()->json('Hello');
     }
 
     public function store(MatchGameRequest $request)
