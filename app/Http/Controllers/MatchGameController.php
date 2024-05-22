@@ -15,9 +15,9 @@ class MatchGameController extends Controller
         $matchGames = MatchGame::with([
             'reservation.venue',
             'team1.sportType',
+            'team2.sportType',
             'team1.users',
             'team2.users',
-            'team2.sportType'
         ]);
 
         if ($request->has('user')) {
@@ -25,21 +25,18 @@ class MatchGameController extends Controller
                 $builder->where('users.id', auth()->id());
             })->orWhereHas('team2.users', function (Builder $builder) {
                 $builder->where('users.id', auth()->id());
-            })->get();
-            return MatchGameResource::collection($matchGames);
+            });
+            return MatchGameResource::collection($matchGames->get());
         }
 
         if ($request->filled('type')) {
             $matchGames->whereHas('team1.sportType', function (Builder $builder, $type) {
                 $builder->where('team1.sportType.name', $type);
-            })->get();
-            return MatchGameResource::collection($matchGames);
+            });
+            return MatchGameResource::collection($matchGames->get());
         }
 
-        $matchGames = $matchGames->paginate(5);
-
-        return MatchGameResource::collection($matchGames);
-        // return response('sdf');
+        return MatchGameResource::collection($matchGames->paginate(5));
     }
 
     public function store(MatchGameRequest $request)

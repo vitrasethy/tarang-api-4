@@ -3,7 +3,6 @@
 use App\Http\Controllers\AmenityController;
 use App\Http\Controllers\GetAvailablesTimeController;
 use App\Http\Controllers\MatchGameController;
-use App\Http\Controllers\MobileReservationController;
 use App\Http\Controllers\ReservationController;
 use App\Http\Controllers\SportTypeController;
 use App\Http\Controllers\TeamController;
@@ -30,5 +29,5 @@ Route::post('available-time', GetAvailablesTimeController::class);
 Route::post('verify-phone', [UserController::class, 'verify']);
 
 // Mobile Endpoint
-Route::post('login', [UserController::class, 'login']);
-Route::get('mobile/reservations', [MobileReservationController::class, 'index']);
+// Route::post('login', [UserController::class, 'login']);
+// Route::get('mobile/reservations', [MobileReservationController::class, 'index']);
