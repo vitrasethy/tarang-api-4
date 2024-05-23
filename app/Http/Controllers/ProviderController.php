@@ -21,6 +21,9 @@ class ProviderController extends Controller
         $user = User::updateOrCreate(
             [
                 'name' => $providerUser->name,
+            ],
+            [
+                'photo' => $providerUser->avatar
             ]
         );
 
