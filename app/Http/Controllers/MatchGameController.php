@@ -26,7 +26,7 @@ class MatchGameController extends Controller
             })->orWhereHas('team2.users', function (Builder $builder) {
                 $builder->where('users.id', auth()->id());
             });
-            return MatchGameResource::collection($matchGames->get());
+            return MatchGameResource::collection($matchGames->paginate(5));
         }
 
         if ($request->filled('type')) {
@@ -34,7 +34,7 @@ class MatchGameController extends Controller
             $matchGames->whereHas('team1.sportType', function (Builder $builder) use ($type) {
                 $builder->where('name', $type);
             });
-            return MatchGameResource::collection($matchGames->get());
+            return MatchGameResource::collection($matchGames->paginate(5));
         }
 
         return MatchGameResource::collection($matchGames->paginate(5));
