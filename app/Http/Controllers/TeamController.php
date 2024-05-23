@@ -39,7 +39,7 @@ class TeamController extends Controller
 
     public function store(TeamRequest $request)
     {
-        // Gate::authorize('create');
+        Gate::authorize('create');
 
         $team = Team::create($request->validated());
 
