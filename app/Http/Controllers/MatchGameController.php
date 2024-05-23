@@ -32,7 +32,7 @@ class MatchGameController extends Controller
         if ($request->filled('type')) {
             $type = $request->input('type');
             $matchGames->whereHas('team1.sportType', function (Builder $builder) use ($type) {
-                $builder->where('sportType.name', $type);
+                $builder->where('name', $type);
             });
             return MatchGameResource::collection($matchGames->get());
         }
