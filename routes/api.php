@@ -27,7 +27,7 @@ Route::get('users', [UserController::class, 'getAllUsers']);
 Route::post('available-time', GetAvailablesTimeController::class);
 Route::post('verify-phone', [UserController::class, 'verify']);
 
-Route::middleware('auth:sanctum')->apiResource('teams', TeamController::class);
+Route::apiResource('teams', TeamController::class);
 
 // Mobile Endpoint
 // Route::post('login', [UserController::class, 'login']);
