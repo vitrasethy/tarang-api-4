@@ -18,7 +18,6 @@ Route::middleware(['auth:sanctum'])->get('/user', function () {
 Route::apiResources([
     'sport-types' => SportTypeController::class,
     'reservation' => ReservationController::class,
-//    'teams' => TeamController::class,
     'match-games' => MatchGameController::class,
     'amenities' => AmenityController::class,
     'venues' => VenueController::class,
