@@ -22,7 +22,7 @@ Route::apiResources([
     'amenities' => AmenityController::class,
 ]);
 Route::get('reservations-user', [ReservationController::class, 'show_user']);
-Route::get('users', [UserController::class, 'getAllUsers']);
+Route::get('users', [UserController::class, 'getAllUsers'])->middleware('auth:sanctum');
 Route::post('available-time', GetAvailablesTimeController::class);
 Route::post('verify-phone', [UserController::class, 'verify']);
 
