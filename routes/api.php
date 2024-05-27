@@ -20,7 +20,6 @@ Route::apiResources([
     'reservation' => ReservationController::class,
     'match-games' => MatchGameController::class,
     'amenities' => AmenityController::class,
-    'venues' => VenueController::class,
 ]);
 Route::get('reservations-user', [ReservationController::class, 'show_user']);
 Route::get('users', [UserController::class, 'getAllUsers']);
@@ -28,6 +27,7 @@ Route::post('available-time', GetAvailablesTimeController::class);
 Route::post('verify-phone', [UserController::class, 'verify']);
 
 Route::apiResource('teams', TeamController::class)->middleware('auth:sanctum');
+Route::apiResource('venues', VenueController::class)->middleware('auth:sanctum');
 
 // Mobile Endpoint
 // Route::post('login', [UserController::class, 'login']);
