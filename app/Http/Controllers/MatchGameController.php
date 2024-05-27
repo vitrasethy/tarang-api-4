@@ -29,14 +29,6 @@ class MatchGameController extends Controller
             return MatchGameResource::collection($matchGames->paginate(5));
         }
 
-        if ($request->filled('type')) {
-            $type = $request->input('type');
-            $matchGames->whereHas('team1.sportType', function (Builder $builder) use ($type) {
-                $builder->where('name', $type);
-            });
-            return MatchGameResource::collection($matchGames->paginate(5));
-        }
-
         return MatchGameResource::collection($matchGames->paginate(5));
     }
 

@@ -18,7 +18,7 @@ Route::middleware(['auth:sanctum'])->get('/user', function () {
 Route::apiResources([
     'sport-types' => SportTypeController::class,
     'reservation' => ReservationController::class,
-    'teams' => TeamController::class,
+//    'teams' => TeamController::class,
     'match-games' => MatchGameController::class,
     'amenities' => AmenityController::class,
     'venues' => VenueController::class,
@@ -27,6 +27,8 @@ Route::get('reservations-user', [ReservationController::class, 'show_user']);
 Route::get('users', [UserController::class, 'getAllUsers']);
 Route::post('available-time', GetAvailablesTimeController::class);
 Route::post('verify-phone', [UserController::class, 'verify']);
+
+Route::middleware('auth:sanctum')->apiResource('teams', TeamController::class);
 
 // Mobile Endpoint
 // Route::post('login', [UserController::class, 'login']);
