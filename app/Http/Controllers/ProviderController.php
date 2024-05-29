@@ -40,7 +40,7 @@ class ProviderController extends Controller
         Auth::login($user);
 
         if ($user->is_admin === 1) {
-            return redirect(config('app.frontend_url').'/admin');
+            return redirect(config('app.frontend_admin_url'));
         }
 
         return redirect(config('app.frontend_url'));
