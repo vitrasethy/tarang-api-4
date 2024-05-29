@@ -25,6 +25,7 @@ Route::get('reservations-user', [ReservationController::class, 'show_user']);
 Route::get('users', [UserController::class, 'getAllUsers'])->middleware('auth:sanctum');
 Route::post('available-time', GetAvailablesTimeController::class);
 Route::post('verify-phone', [UserController::class, 'verify']);
+Route::post('find-reservation', [ReservationController::class, 'find_reservation']);
 
 Route::apiResource('teams', TeamController::class)->middleware('auth:sanctum');
 Route::apiResource('venues', VenueController::class)->middleware('auth:sanctum');

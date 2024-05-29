@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\FindReservationRequest;
 use App\Http\Requests\ReservationRequest;
 use App\Http\Resources\ReservationCollection;
 use App\Http\Resources\ReservationResource;
@@ -73,5 +74,23 @@ class ReservationController extends Controller
             : $query->paginate(5);
 
         return new ReservationCollection($reservations);
+    }
+
+    public function find_reservation(FindReservationRequest $request)
+    {
+        $validated = $request->validated();
+
+        $date = Carbon::parse($validated['date'])->toDateString();
+
+        $reservation = Reservation::where([
+            ['date', '=', $date],
+            ['start_time', '=', $validated['start_time']],
+            ['end_time', '=', $validated['end_time']],
+            ['venue_id', '=', $validated['venue_id']],
+        ])->exists();
+
+        return response()->json([
+            'is_founded' => $reservation,
+        ]);
     }
 }
