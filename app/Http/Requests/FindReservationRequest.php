@@ -10,8 +10,8 @@ class FindReservationRequest extends FormRequest
     {
         return [
             'date' => ['required', 'date_format:Y-m-d\TH:i:s.v\Z'],
-            'start_time' => ['required', 'date_format:H:i:s'],
-            'end_time' => ['required', 'date_format:H:i:s'],
+            'start_time' => ['required', 'date_format:H:i'],
+            'end_time' => ['required', 'date_format:H:i'],
             'venue_id' => ['required', 'exists:venues,id'],
         ];
     }
