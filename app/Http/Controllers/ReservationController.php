@@ -89,7 +89,7 @@ class ReservationController extends Controller
         ])->get();
 
         return response()->json([
-            'is_founded' => !$reservation,
+            'is_founded' => $reservation->isEmpty(),
         ]);
     }
 }
