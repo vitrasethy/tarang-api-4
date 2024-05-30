@@ -85,12 +85,11 @@ class ReservationController extends Controller
         $reservation = Reservation::where([
             ['date', '=', $date],
             ['start_time', '=', Carbon::parse($validated['start_time'])->toTimeString()],
-            ['end_time', '=', Carbon::parse($validated['end_time'])->toTimeString()],
             ['venue_id', '=', $validated['venue_id']],
-        ])->exists();
+        ])->get();
 
         return response()->json([
-            'is_founded' => $reservation,
+            'is_founded' => !$reservation,
         ]);
     }
 }
