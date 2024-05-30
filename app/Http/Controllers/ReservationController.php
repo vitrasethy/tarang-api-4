@@ -28,7 +28,7 @@ class ReservationController extends Controller
     {
         $reservation = Reservation::create([
             ...$request->validated(),
-            "user_id" => auth()->id()
+            "user_id" => auth()->id(),
         ]);
 
         $user = auth()->user();
@@ -81,15 +81,27 @@ class ReservationController extends Controller
         $validated = $request->validated();
 
         $date = Carbon::parse($validated['date'])->toDateString();
+        $start_time = Carbon::parse($validated['start_time'])->toTimeString();
+        $end_time = Carbon::parse($validated['end_time'])->toTimeString();
 
         $reservation = Reservation::where([
             ['date', '=', $date],
-            ['start_time', '=', Carbon::parse($validated['start_time'])->toTimeString()],
             ['venue_id', '=', $validated['venue_id']],
-        ])->get();
+        ])->where(function ($query) use ($start_time, $end_time) {
+            $query->where([
+                ['start_time', '<=', $start_time],
+                ['end_time', '>', $start_time],
+            ])->orWhere([
+                ['start_time', '<', $end_time],
+                ['end_time', '>=', $end_time],
+            ])->orWhere([
+                ['start_time', '>=', $start_time],
+                ['end_time', '<=', $end_time],
+            ]);
+        })->exists();
 
         return response()->json([
-            'is_founded' => $reservation->isEmpty(),
+            'is_founded' => !$reservation,
         ]);
     }
 }
