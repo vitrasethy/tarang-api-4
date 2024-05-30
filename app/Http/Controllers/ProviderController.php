@@ -40,9 +40,9 @@ class ProviderController extends Controller
         Auth::login($user);
 
         if ($user->is_admin === 1) {
-            return redirect('https://admin.tarang.site');
+            return redirect('http://localhost:3000');
         }
 
-        return redirect(config('app.frontend_url'));
+        return redirect('http://localhost:3000');
     }
 }
