@@ -28,8 +28,6 @@ Route::post('verify-phone', [UserController::class, 'verify']);
 Route::post('find-reservation', [ReservationController::class, 'find_reservation']);
 
 Route::apiResource('teams', TeamController::class)->middleware('auth:sanctum');
-Route::apiResource('venues', VenueController::class)->middleware('auth:sanctum');
-
-// Mobile Endpoint
-// Route::post('login', [UserController::class, 'login']);
-// Route::get('mobile/reservations', [MobileReservationController::class, 'index']);
+Route::apiResource('venues', VenueController::class)->middleware('auth:sanctum')
+    ->except('index')->middleware('auth:sanctum');
+Route::get('venues', [VenueController::class, 'index']);
