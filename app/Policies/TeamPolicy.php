@@ -24,7 +24,7 @@ class TeamPolicy
     public function create(User $user): Response
     {
         $teams = Team::with('users')->whereHas('users', function (Builder $query) use ($user) {
-            $query->where('users.id', $user->id);
+            $query->where('users.id', auth()->id());
         })->count();
 
         return $teams <= 2
