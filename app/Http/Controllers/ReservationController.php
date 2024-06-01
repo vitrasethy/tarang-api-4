@@ -15,7 +15,7 @@ class ReservationController extends Controller
 {
     public function index(Request $request)
     {
-        $query = Reservation::with(["venue.sportType", "user", "team"]);
+        $query = Reservation::with(["venue.sportType", "user", "matchGame.team1", "matchGame.team2"]);
 
         if ($request->has('all')) {
             return ReservationResource::collection($query->latest()->get());

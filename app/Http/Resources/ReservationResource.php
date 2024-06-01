@@ -25,7 +25,7 @@ class ReservationResource extends JsonResource
 
             'venue' => new VenueResource($this->whenLoaded('venue')),
             'user' => new UserResource($this->whenLoaded('user')),
-            'team' => new TeamResource($this->whenLoaded('team')),
+            'match_game' => new MatchGameResource($this->whenLoaded('matchGame'))
         ];
     }
 }
