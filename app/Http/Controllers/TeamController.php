@@ -14,7 +14,7 @@ class TeamController extends Controller
 {
     public function index(Request $request)
     {
-        Gate::authorize('viewAny');
+        Gate::authorize('viewAny', auth()->id());
 
         $query = Team::with(['sportType', 'users']);
 
