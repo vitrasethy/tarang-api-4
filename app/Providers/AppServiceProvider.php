@@ -2,9 +2,12 @@
 
 namespace App\Providers;
 
+use App\Models\Team;
+use App\Policies\TeamPolicy;
 use Illuminate\Auth\Notifications\ResetPassword;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Support\ServiceProvider;
+use Illuminate\Support\Facades\Gate;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -24,6 +27,8 @@ class AppServiceProvider extends ServiceProvider
         ResetPassword::createUrlUsing(function (object $notifiable, string $token) {
             return config('app.frontend_url')."/password-reset/$token?email={$notifiable->getEmailForPasswordReset()}";
         });
+
+        Gate::policy(Team::class, TeamPolicy::class);
 
         JsonResource::withoutWrapping();
     }
