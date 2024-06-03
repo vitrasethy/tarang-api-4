@@ -14,7 +14,7 @@ class TeamPolicy
 
     public function viewAny(User $user)
     {
-        return $user->id === 10;
+        return $user->id === 3;
     }
 
     public function view(User $user, Team $team)
