@@ -64,6 +64,12 @@ class TeamController extends Controller
 
     public function destroy(Team $team)
     {
+        if ($team->matchGames()->exists()){
+            return response()->json([
+                'message' => 'This team is in Match Game.'
+            ], 403);
+        }
+
         $team->delete();
 
         return response()->noContent();
