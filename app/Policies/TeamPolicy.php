@@ -12,7 +12,7 @@ class TeamPolicy
 {
     use HandlesAuthorization;
 
-    public function viewAny(User $user)
+    public function viewAny()
     {
         return true;
     }
