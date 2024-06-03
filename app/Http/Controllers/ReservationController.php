@@ -26,12 +26,27 @@ class ReservationController extends Controller
 
     public function store(ReservationRequest $request)
     {
+        $validated = $request->validated();
+
+        $is_reservation_exist = $this->is_reservation_exist(
+            $validated['date'],
+            $validated['start_time'],
+            $validated['end_time'],
+            $validated['venue_id']
+        );
+
+        if ($is_reservation_exist) {
+            return response()->json([
+                "message" => "We couldn't create the item because the data already exists."
+            ], 409);
+        }
+
         $reservation = Reservation::create([
-            ...$request->validated(),
+            ...$validated,
             "user_id" => auth()->id(),
         ]);
 
-        $user = auth()->user();
+//        $user = auth()->user();
 
 //        $delay = Carbon::parse("$request->input('date') $request->input('start_time')")->subMinutes(2);
 //        $user->notify(new SendReminderSMS($request->input('start_time')))->delay($delay);
@@ -100,26 +115,6 @@ class ReservationController extends Controller
             $validated['end_time'],
             $validated['venue_id']
         );
-
-//        $date = Carbon::parse($validated['date'])->toDateString();
-//        $start_time = Carbon::parse($validated['start_time'])->toTimeString();
-//        $end_time = Carbon::parse($validated['end_time'])->toTimeString();
-//
-//        $reservation = Reservation::where([
-//            ['date', '=', $date],
-//            ['venue_id', '=', $validated['venue_id']],
-//        ])->where(function ($query) use ($start_time, $end_time) {
-//            $query->where([
-//                ['start_time', '<=', $start_time],
-//                ['end_time', '>', $start_time],
-//            ])->orWhere([
-//                ['start_time', '<', $end_time],
-//                ['end_time', '>=', $end_time],
-//            ])->orWhere([
-//                ['start_time', '>=', $start_time],
-//                ['end_time', '<=', $end_time],
-//            ]);
-//        })->exists();
 
         return response()->json([
             'is_founded' => !$reservation,

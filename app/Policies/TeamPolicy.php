@@ -4,47 +4,67 @@ namespace App\Policies;
 
 use App\Models\Team;
 use App\Models\User;
-use Illuminate\Auth\Access\HandlesAuthorization;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Auth\Access\Response;
 
 class TeamPolicy
 {
-    use HandlesAuthorization;
-
-    public function viewAny(User $user)
+    /**
+     * Determine whether the user can view any models.
+     */
+    public function viewAny(User $user): bool
     {
         return true;
     }
 
-    public function view(User $user, Team $team)
+    /**
+     * Determine whether the user can view the model.
+     */
+    public function view(User $user, Team $team): bool
     {
+        return true;
     }
 
-    public function create(User $user): Response
+    /**
+     * Determine whether the user can create models.
+     */
+    public function create(User $user): bool
     {
         $teams = Team::with('users')->whereHas('users', function (Builder $query) use ($user) {
-            $query->where('users.id', auth()->id());
+            $query->where('users.id', $user->id);
         })->count();
 
-        return $teams <= 2
-            ? Response::allow()
-            : Response::deny('You already create 2 teams. No more.');
+        return $teams < 2;
     }
 
-    public function update(User $user, Team $team)
+    /**
+     * Determine whether the user can update the model.
+     */
+    public function update(User $user, Team $team): bool
     {
+        return true;
     }
 
-    public function delete(User $user, Team $team)
+    /**
+     * Determine whether the user can delete the model.
+     */
+    public function delete(User $user, Team $team): bool
     {
+        return true;
     }
 
-    public function restore(User $user, Team $team)
+    /**
+     * Determine whether the user can restore the model.
+     */
+    public function restore(User $user, Team $team): bool
     {
+        return true;
     }
 
-    public function forceDelete(User $user, Team $team)
+    /**
+     * Determine whether the user can permanently delete the model.
+     */
+    public function forceDelete(User $user, Team $team): bool
     {
+        return true;
     }
 }

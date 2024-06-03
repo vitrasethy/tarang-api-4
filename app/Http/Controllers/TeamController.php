@@ -14,8 +14,6 @@ class TeamController extends Controller
 {
     public function index(Request $request)
     {
-        Gate::authorize('viewAny');
-
         $query = Team::with(['sportType', 'users']);
 
         if ($request->filled('type')) {
@@ -41,7 +39,7 @@ class TeamController extends Controller
 
     public function store(TeamRequest $request)
     {
-//        Gate::authorize('create');
+        Gate::authorize('create', Team::class);
 
         $team = Team::create($request->validated());
 
