@@ -27,6 +27,12 @@ Route::middleware('auth:sanctum')->group(function () {
 
     // list of users
     Route::get('users', [UserController::class, 'getAllUsers']);
+
+    // get report
+    Route::post('reservation/custom-report', [ReservationController::class, 'custom_report']);
+    Route::get('reservation/report', [ReservationController::class, 'report']);
+    Route::get('venues/report', [VenueController::class, 'report']);
+    Route::get('venues/pending', [VenueController::class, 'pending']);
 });
 
 // Route of major models which not protected

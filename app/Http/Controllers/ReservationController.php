@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\FindReservationRequest;
+use App\Http\Requests\ReservationReportRequest;
 use App\Http\Requests\ReservationRequest;
 use App\Http\Resources\ReservationCollection;
 use App\Http\Resources\ReservationResource;
@@ -37,7 +38,7 @@ class ReservationController extends Controller
 
         if ($is_reservation_exist) {
             return response()->json([
-                "message" => "We couldn't create the item because the data already exists."
+                "message" => "We couldn't create the item because the data already exists.",
             ], 409);
         }
 
@@ -77,7 +78,7 @@ class ReservationController extends Controller
 
         if ($is_reservation_exist) {
             return response()->json([
-                'message' => 'Time not available for reservation'
+                'message' => 'Time not available for reservation',
             ], 403);
         }
 
@@ -148,5 +149,37 @@ class ReservationController extends Controller
                 ['end_time', '<=', $end_time_str],
             ]);
         })->exists();
+    }
+
+    // get report of reservation base custom date
+    public function custom_report(ReservationReportRequest $request)
+    {
+        $validated = $request->validated();
+
+        return response()->json([
+            "count" => Reservation::whereBetween('date', [$validated['start_date'], $validated['end_time']])
+                ->count(),
+        ]);
+    }
+
+    // get report with range one month
+    public function report()
+    {
+        $reservation_one_month = Reservation::whereBetween('date', [now()->subMonth(), now()])->count();
+        $reservation_two_month = Reservation::whereBetween(
+            'date', [now()->subMonths(2), now()->subMonth()]
+        )->count();
+
+        $percentage = (($reservation_one_month - $reservation_two_month) / $reservation_two_month) * 100;
+
+        return response()->json([
+            "count" => $reservation_one_month,
+            "percentage" => $percentage,
+        ]);
+    }
+
+    public function pending()
+    {
+        return Reservation::where('date', '>', now())->get();
     }
 }

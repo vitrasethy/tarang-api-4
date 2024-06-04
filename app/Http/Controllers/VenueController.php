@@ -82,4 +82,11 @@ class VenueController extends Controller
 
         return response()->noContent();
     }
+
+    public function report()
+    {
+        return response()->json([
+            "count" => Venue::count(),
+        ]);
+    }
 }
