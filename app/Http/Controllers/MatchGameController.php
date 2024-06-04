@@ -7,6 +7,7 @@ use App\Http\Resources\MatchGameResource;
 use App\Models\MatchGame;
 use Illuminate\Contracts\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
 
 class MatchGameController extends Controller
 {
@@ -50,6 +51,8 @@ class MatchGameController extends Controller
 
     public function update(MatchGameRequest $request, MatchGame $matchGame)
     {
+        Gate::authorize('update', MatchGame::class);
+
         $validated = $request->validated();
 
         $matchGame->update($validated);
@@ -59,6 +62,8 @@ class MatchGameController extends Controller
 
     public function destroy(MatchGame $matchGame)
     {
+        Gate::authorize('delete', $matchGame);
+
         $matchGame->delete();
 
         return response()->noContent();

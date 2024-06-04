@@ -11,6 +11,7 @@ use App\Models\Reservation;
 use App\Notifications\SendReminderSMS;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Gate;
 
 class ReservationController extends Controller
 {
@@ -66,6 +67,8 @@ class ReservationController extends Controller
         ReservationRequest $request,
         Reservation $reservation
     ) {
+        Gate::authorize('update', $reservation);
+
         $validated = $request->validated();
 
         $is_reservation_exist = $this->is_reservation_exist(
@@ -89,6 +92,8 @@ class ReservationController extends Controller
 
     public function destroy(Reservation $reservation)
     {
+        Gate::authorize('delete', $reservation);
+
         $reservation->delete();
 
         return response()->noContent();
@@ -108,6 +113,8 @@ class ReservationController extends Controller
 
     public function find_reservation(FindReservationRequest $request)
     {
+        Gate::authorize('viewAdmin', Reservation::class);
+
         $validated = $request->validated();
 
         $reservation = $this->is_reservation_exist(
@@ -154,6 +161,8 @@ class ReservationController extends Controller
     // get report of reservation base custom date
     public function custom_report(ReservationReportRequest $request)
     {
+        Gate::authorize('viewAdmin', Reservation::class);
+
         $validated = $request->validated();
 
         return response()->json([
@@ -165,6 +174,8 @@ class ReservationController extends Controller
     // get report with range one month
     public function report()
     {
+        Gate::authorize('viewAdmin', Reservation::class);
+
         $reservation_one_month = Reservation::whereBetween('date', [now()->subMonth(), now()])->count();
         $reservation_two_month = Reservation::whereBetween(
             'date', [now()->subMonths(2), now()->subMonth()]
@@ -180,6 +191,8 @@ class ReservationController extends Controller
 
     public function pending()
     {
+        Gate::authorize('viewAdmin', Reservation::class);
+
         return Reservation::where('date', '>', now())->get();
     }
 }

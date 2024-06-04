@@ -8,6 +8,7 @@ use App\Http\Resources\SportTypeResource;
 use App\Models\SportType;
 use App\Models\Team;
 use App\Models\Venue;
+use Illuminate\Support\Facades\Gate;
 
 class SportTypeController extends Controller
 {
@@ -20,6 +21,8 @@ class SportTypeController extends Controller
 
     public function store(SportTypeRequest $request)
     {
+        Gate::authorize('CreateUpdateDelete', SportType::class);
+
         $validated = $request->validated();
 
         SportType::create($validated);
@@ -34,6 +37,8 @@ class SportTypeController extends Controller
 
     public function update(SportTypeRequest $request, SportType $sportType)
     {
+        Gate::authorize('CreateUpdateDelete', SportType::class);
+
         $validated = $request->validated();
 
         $sportType->update($validated);
@@ -43,6 +48,8 @@ class SportTypeController extends Controller
 
     public function destroy(SportType $sportType)
     {
+        Gate::authorize('CreateUpdateDelete', SportType::class);
+
         if (
             Team::where('sport_type_id', $sportType)->exists() ||
             Venue::where('sport_type_id', $sportType)->exists()

@@ -57,6 +57,8 @@ class TeamController extends Controller
 
     public function update(TeamRequest $request, Team $team)
     {
+        Gate::authorize('updateDelete', $team);
+
         $team->update($request->validated());
 
         return new TeamResource($team);
@@ -64,6 +66,8 @@ class TeamController extends Controller
 
     public function destroy(Team $team)
     {
+        Gate::authorize('updateDelete', $team);
+
         if ($team->matchGames()->exists()){
             return response()->json([
                 'message' => 'This team is in Match Game.'

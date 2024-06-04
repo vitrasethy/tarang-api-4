@@ -8,6 +8,7 @@ use App\Http\Resources\VenueResource;
 use App\Models\Reservation;
 use App\Models\Venue;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
 
 class VenueController extends Controller
 {
@@ -41,6 +42,8 @@ class VenueController extends Controller
 
     public function store(VenueRequest $request)
     {
+        Gate::authorize('admin', Venue::class);
+
         $request->validated();
 
         $venue = Venue::create([
@@ -61,6 +64,8 @@ class VenueController extends Controller
 
     public function update(VenueRequest $request, Venue $venue)
     {
+        Gate::authorize('admin', Venue::class);
+
         $request->validated();
 
         $venue->update([
@@ -74,6 +79,8 @@ class VenueController extends Controller
 
     public function destroy(Venue $venue)
     {
+        Gate::authorize('admin', Venue::class);
+
         if (Reservation::where('venue_id', $venue->id)->exists()) {
             return response("Can't delete.", 403);
         }
@@ -85,6 +92,8 @@ class VenueController extends Controller
 
     public function report()
     {
+        Gate::authorize('admin', Venue::class);
+
         return response()->json([
             "count" => Venue::count(),
         ]);

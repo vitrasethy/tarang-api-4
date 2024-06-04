@@ -7,6 +7,7 @@ use App\Http\Resources\AmenityCollection;
 use App\Http\Resources\AmenityResource;
 use App\Models\Amenity;
 use App\Models\Venue;
+use Illuminate\Support\Facades\Gate;
 
 class AmenityController extends Controller
 {
@@ -19,6 +20,8 @@ class AmenityController extends Controller
 
     public function store(AmenityRequest $request)
     {
+        Gate::authorize('admin', Amenity::class);
+
         $validated = $request->validated();
 
         $amenities = Amenity::create($validated);
@@ -33,6 +36,8 @@ class AmenityController extends Controller
 
     public function update(AmenityRequest $request, Amenity $amenity)
     {
+        Gate::authorize('admin', Amenity::class);
+
         $validated = $request->validated();
 
         $amenity->update($validated);
@@ -42,6 +47,8 @@ class AmenityController extends Controller
 
     public function destroy(Amenity $amenity)
     {
+        Gate::authorize('admin', Amenity::class);
+
         if ($amenity->venues()->exists()) {
             return response()->json([
                 "message" => "Can't delete amenity because this amenity associate with venues"
