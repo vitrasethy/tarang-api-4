@@ -32,7 +32,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('reservation/custom-report', [ReservationController::class, 'custom_report']);
     Route::get('reservation/report', [ReservationController::class, 'report']);
     Route::get('venues/report', [VenueController::class, 'report']);
-    Route::get('venues/pending', [VenueController::class, 'pending']);
+    Route::get('reservation/pending', [VenueController::class, 'pending']);
 });
 
 // Route of major models which not protected
