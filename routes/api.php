@@ -18,6 +18,12 @@ Route::middleware(['auth:sanctum'])->get('/user', function () {
 
 // Route protected
 Route::middleware('auth:sanctum')->group(function () {
+    // get report
+    Route::post('reservation/custom-report', [ReservationController::class, 'custom_report']);
+    Route::get('reservation/report', [ReservationController::class, 'report']);
+    Route::get('venues/report', [VenueController::class, 'report']);
+    Route::get('reservation/pending', [ReservationController::class, 'pending']);
+
     Route::apiResource('sport-types', SportTypeController::class)->except('index');
     Route::apiResource('reservation', ReservationController::class)->except('index');
     Route::apiResource('match-games', MatchGameController::class)->except('index');
@@ -32,7 +38,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('reservation/custom-report', [ReservationController::class, 'custom_report']);
     Route::get('reservation/report', [ReservationController::class, 'report']);
     Route::get('venues/report', [VenueController::class, 'report']);
-    Route::get('reservation/pending', [VenueController::class, 'pending']);
+    Route::get('reservation/pending', [ReservationController::class, 'pending']);
 });
 
 // Route of major models which not protected
