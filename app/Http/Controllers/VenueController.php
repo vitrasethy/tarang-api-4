@@ -15,27 +15,31 @@ class VenueController extends Controller
     public function index(Request $request)
     {
         $query = Venue::with(['sportType', 'amenities']);
+        $filterKey = '';
+        $filterValue = '';
 
         if ($request->filled('type')) {
-            $type = $request->type;
-            $query->where(function ($q) use ($type) {
-                $q->where('sport_type_id', $type)
-                    ->orWhereHas('sportType', function ($query) use ($type) {
-                        $query->where('name', $type);
+            $filterKey = 'type';
+            $filterValue = $request->type;
+            $query->where(function ($q) use ($filterValue) {
+                $q->where('sport_type_id', $filterValue)
+                    ->orWhereHas('sportType', function ($query) use ($filterValue) {
+                        $query->where('name', $filterValue);
                     });
             });
         }
 
         if ($request->filled('amenity')) {
-            $amenityId = $request->amenity;
-            $query->whereHas('amenities', function ($query) use ($amenityId) {
-                $query->where('amenities.id', $amenityId);
+            $filterKey = 'amenity';
+            $filterValue = $request->amenity;
+            $query->whereHas('amenities', function ($query) use ($filterValue) {
+                $query->where('amenities.id', $filterValue);
             });
         }
 
         $venues = $request->has('all')
             ? $query->get()
-            : $query->paginate(5);
+            : $query->paginate(5)->appends([$filterKey => $filterValue]);
 
         return new VenueCollection($venues);
     }
@@ -57,7 +61,7 @@ class VenueController extends Controller
 
     public function show(Venue $venue)
     {
-        $venue->load('sportType');
+        $venue->load(['sportType', 'amenities']);
 
         return new VenueResource($venue);
     }

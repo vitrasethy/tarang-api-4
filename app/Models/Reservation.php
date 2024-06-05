@@ -43,4 +43,6 @@ class Reservation extends Model
             'date' => 'date',
         ];
     }
+
+
 }

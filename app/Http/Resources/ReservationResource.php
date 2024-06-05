@@ -23,6 +23,7 @@ class ReservationResource extends JsonResource
             'find_member' => $this->find_member,
             'created_at' => $this->created_at,
 
+            'sport_type' => $this->whenLoaded('venue', fn () => new SportTypeResource($this->venue->sportType)),
             'venue' => new VenueResource($this->whenLoaded('venue')),
             'user' => new UserResource($this->whenLoaded('user')),
             'match_game' => new MatchGameResource($this->whenLoaded('matchGame'))

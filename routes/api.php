@@ -28,7 +28,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::apiResource('reservation', ReservationController::class)->except('index');
     Route::apiResource('match-games', MatchGameController::class)->except('index');
     Route::apiResource('amenities', AmenityController::class)->except('index');
-    Route::apiResource('venues', VenueController::class)->except('index');
+    Route::apiResource('venues', VenueController::class)->except(['index', 'show']);
     Route::apiResource('teams', TeamController::class);
 
     // list of users
@@ -43,6 +43,7 @@ Route::middleware('auth:sanctum')->group(function () {
 
 // Route of major models which not protected
 Route::get('venues', [VenueController::class, 'index']);
+Route::get('venues/{venue}', [VenueController::class, 'show']);
 Route::get('amenities', [AmenityController::class, 'index']);
 Route::get('match-games', [MatchGameController::class, 'index']);
 Route::get('reservation', [ReservationController::class, 'index']);

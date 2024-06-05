@@ -26,11 +26,6 @@ class ReservationController extends Controller
         return ReservationResource::collection($query->latest()->paginate(5));
     }
 
-    public function index_filter_sport_type()
-    {
-
-    }
-
     public function store(ReservationRequest $request)
     {
         $validated = $request->validated();
@@ -199,8 +194,6 @@ class ReservationController extends Controller
             "count" => $reservation_one_month,
             "percentage" => $percentage,
         ]);
-
-//        return response()->noContent();
     }
 
     public function pending()
