@@ -26,6 +26,11 @@ class ReservationController extends Controller
         return ReservationResource::collection($query->latest()->paginate(5));
     }
 
+    public function index_filter_sport_type()
+    {
+
+    }
+
     public function store(ReservationRequest $request)
     {
         $validated = $request->validated();
@@ -180,6 +185,12 @@ class ReservationController extends Controller
         $reservation_two_month = Reservation::whereBetween(
             'date', [now()->subMonths(2), now()->subMonth()]
         )->count();
+
+        if ($reservation_one_month == 0 || $reservation_two_month == 0) {
+            return response()->json([
+                "message" => "No reservations found in the specified date ranges.",
+            ], 404);
+        }
 
         $percentage = (($reservation_one_month - $reservation_two_month) / $reservation_two_month) * 100;
 
