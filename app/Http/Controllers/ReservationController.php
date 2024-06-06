@@ -9,6 +9,7 @@ use App\Http\Resources\ReservationCollection;
 use App\Http\Resources\ReservationResource;
 use App\Models\Reservation;
 use App\Notifications\SendReminderSMS;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Gate;
@@ -19,11 +20,46 @@ class ReservationController extends Controller
     {
         $query = Reservation::with(["venue.sportType", "user", "matchGame.team1", "matchGame.team2"]);
 
+        // get all data without pagination
         if ($request->has('all')) {
             return ReservationResource::collection($query->latest()->get());
         }
 
-        return ReservationResource::collection($query->latest()->paginate(5));
+        // user filter date and sport type
+        if ($request->filled('date') && $request->filled('type')) {
+            $sportType = $request->type;
+            $reservation = $query
+                ->where('date', $request->date)
+                ->whereHas('venue.sportType', function (Builder $builder) use ($sportType) {
+                    $builder->where('id', $sportType);
+                })
+                ->latest()
+                ->paginate(5)
+                ->appends([
+                    'date' => $request->date,
+                    'type' => $sportType,
+                ]);
+        } else {
+            // user either filter by date or sport type
+            if ($request->filled('date')) {
+                $reservation = $query
+                    ->where('date', $request->date)
+                    ->latest()
+                    ->paginate(5)
+                    ->appends(['date' => $request->date]);
+            } else {
+                $sportType = $request->type;
+                $reservation = $query
+                    ->whereHas('venue.sportType', function (Builder $builder) use ($sportType) {
+                        $builder->where('id', $sportType);
+                    })
+                    ->latest()
+                    ->paginate(5)
+                    ->appends(['type' => $sportType]);
+            }
+        }
+
+        return ReservationResource::collection($reservation);
     }
 
     public function store(ReservationRequest $request)
@@ -63,10 +99,8 @@ class ReservationController extends Controller
         return new ReservationResource($reservation);
     }
 
-    public function update(
-        ReservationRequest $request,
-        Reservation $reservation
-    ) {
+    public function update(ReservationRequest $request, Reservation $reservation)
+    {
         Gate::authorize('update', $reservation);
 
         $validated = $request->validated();
@@ -184,10 +218,30 @@ class ReservationController extends Controller
         ]);
     }
 
+    // get reservation that not play yet
     public function pending()
     {
         Gate::authorize('viewAdmin', Reservation::class);
 
         return Reservation::where('date', '>', now())->get();
+    }
+
+    // get reservation for this month or any month
+    public function get_month_reservation(Request $request)
+    {
+        Gate::authorize('viewAdmin', Reservation::class);
+
+        $year = Carbon::now()->year;
+        $query = Reservation::with(["venue.sportType", "user", "matchGame.team1", "matchGame.team2"]);
+
+        if ($request->filled('month')) {
+            $month = $request->month;
+        } else {
+            $month = Carbon::now()->month;
+        }
+
+        $reservation = $query->whereMonth('date', $month)->whereYear('date', $year)->get();
+
+        return ReservationResource::collection($reservation);
     }
 }

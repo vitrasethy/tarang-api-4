@@ -23,6 +23,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('reservation/report', [ReservationController::class, 'report']);
     Route::get('venues/report', [VenueController::class, 'report']);
     Route::get('reservation/pending', [ReservationController::class, 'pending']);
+    Route::get('reservation/month', [ReservationController::class, 'get_month_reservation']);
 
     Route::apiResource('sport-types', SportTypeController::class)->except('index');
     Route::apiResource('reservation', ReservationController::class)->except('index');
