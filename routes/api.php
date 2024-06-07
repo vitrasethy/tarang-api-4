@@ -5,7 +5,6 @@ use App\Http\Controllers\GetAvailablesTimeController;
 use App\Http\Controllers\MatchGameController;
 use App\Http\Controllers\ReservationController;
 use App\Http\Controllers\SportTypeController;
-use App\Http\Controllers\TeamController;
 use App\Http\Controllers\TestAuthAPI;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\VenueController;
@@ -13,7 +12,7 @@ use App\Models\User;
 use Illuminate\Support\Facades\Route;
 
 Route::middleware(['auth:sanctum'])->get('/user', function () {
-    return User::with('teams')->where('id', auth()->id())->first();
+    return User::where('id', auth()->id())->first();
 });
 
 // Route protected
@@ -30,7 +29,6 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::apiResource('match-games', MatchGameController::class)->except('index');
     Route::apiResource('amenities', AmenityController::class)->except('index');
     Route::apiResource('venues', VenueController::class)->except(['index', 'show']);
-    Route::apiResource('teams', TeamController::class);
 
     // list of users
     Route::get('users', [UserController::class, 'getAllUsers']);

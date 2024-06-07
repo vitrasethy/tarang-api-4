@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Http\Requests\MatchGameRequest;
 use App\Http\Resources\MatchGameResource;
 use App\Models\MatchGame;
-use Illuminate\Contracts\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
 
@@ -13,20 +12,11 @@ class MatchGameController extends Controller
 {
     public function index(Request $request)
     {
-        $matchGames = MatchGame::with([
-            'reservation.venue',
-            'team1.sportType',
-            'team2.sportType',
-            'team1.users',
-            'team2.users',
-        ]);
+        $matchGames = MatchGame::with(['reservation.venue', 'users']);
 
         if ($request->has('user')) {
-            $matchGames->whereHas('team1.users', function (Builder $builder) {
-                $builder->where('users.id', auth()->id());
-            })->orWhereHas('team2.users', function (Builder $builder) {
-                $builder->where('users.id', auth()->id());
-            });
+            $matchGames->where('user1_id', auth()->id())->orWhere('user2_id', auth()->id());
+
             return MatchGameResource::collection($matchGames->paginate(5));
         }
 
@@ -37,14 +27,16 @@ class MatchGameController extends Controller
     {
         $validated = $request->validated();
 
-        MatchGame::create($validated);
+        $match_game = MatchGame::create($validated);
+
+        $match_game->users()->attach(auth()->id());
 
         return response()->noContent();
     }
 
     public function show(MatchGame $matchGame)
     {
-        $matchGame->load(['reservation', 'team']);
+        $matchGame->load(['reservation', 'users']);
 
         return new MatchGameResource($matchGame);
     }
@@ -56,6 +48,8 @@ class MatchGameController extends Controller
         $validated = $request->validated();
 
         $matchGame->update($validated);
+
+        $matchGame->users()->attach(auth()->id());
 
         return response()->noContent();
     }

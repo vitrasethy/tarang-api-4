@@ -10,9 +10,9 @@ class MatchGamePolicy
 {
     use HandlesAuthorization;
 
-    public function update(User $user): bool
+    public function update(User $user, MatchGame $matchGame): bool
     {
-        return $user->is_admin === true;
+        return $user->is_admin === true || $matchGame->reservation->user_id !== auth()->id();
     }
 
     public function delete(User $user, MatchGame $matchGame): bool

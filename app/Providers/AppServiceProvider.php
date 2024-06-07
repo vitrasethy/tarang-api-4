@@ -2,12 +2,9 @@
 
 namespace App\Providers;
 
-use App\Models\Team;
-use App\Policies\TeamPolicy;
 use Illuminate\Auth\Notifications\ResetPassword;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Support\ServiceProvider;
-use Illuminate\Support\Facades\Gate;
 
 class AppServiceProvider extends ServiceProvider
 {

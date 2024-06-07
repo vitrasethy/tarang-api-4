@@ -10,11 +10,8 @@ class MatchGameRequest extends FormRequest
     {
         return [
             'is_accepted' => ['sometimes', 'boolean'],
-            'team1_id' => ['required', 'exists:teams,id'],
-            'team2_id' => ['sometimes', 'exists:teams,id'],
             'reservation_id' => 'required|exists:reservations,id',
-            'team2_phone' => 'sometimes|string|digits:13',
-            'comment' => 'nullable|string'
+            'comment' => 'nullable|string',
         ];
     }
 

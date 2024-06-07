@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class MatchGame extends Model
@@ -12,9 +13,6 @@ class MatchGame extends Model
 
     protected $fillable = [
         'is_accepted',
-        'team1_id',
-        'team2_id',
-        'team2_phone',
         'comment',
         'reservation_id',
     ];
@@ -24,13 +22,8 @@ class MatchGame extends Model
         return $this->belongsTo(Reservation::class);
     }
 
-    public function team1(): BelongsTo
+    public function users(): BelongsToMany
     {
-        return $this->belongsTo(Team::class, 'team1_id');
-    }
-
-    public function team2(): BelongsTo
-    {
-        return $this->belongsTo(Team::class, 'team2_id');
+        return $this->belongsToMany(User::class);
     }
 }

@@ -14,7 +14,6 @@ class Reservation extends Model
     protected $fillable = [
         'phone', 'attendee', 'date', 'start_time', 'end_time',
         'venue_id', 'user_id', 'find_team', 'find_member',
-        'team_id',
     ];
 
     public function user(): BelongsTo
@@ -25,11 +24,6 @@ class Reservation extends Model
     public function venue(): BelongsTo
     {
         return $this->belongsTo(Venue::class);
-    }
-
-    public function team(): BelongsTo
-    {
-        return $this->belongsTo(Team::class);
     }
 
     public function matchGame(): HasOne

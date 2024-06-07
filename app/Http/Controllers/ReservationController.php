@@ -8,7 +8,6 @@ use App\Http\Requests\ReservationRequest;
 use App\Http\Resources\ReservationCollection;
 use App\Http\Resources\ReservationResource;
 use App\Models\Reservation;
-use App\Notifications\SendReminderSMS;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
@@ -18,7 +17,7 @@ class ReservationController extends Controller
 {
     public function index(Request $request)
     {
-        $query = Reservation::with(["venue.sportType", "user", "matchGame.team1", "matchGame.team2"]);
+        $query = Reservation::with(["venue.sportType", "user", "matchGame.users"]);
 
         // Return all data without pagination if 'all' parameter is present
         if ($request->has('all')) {
@@ -72,6 +71,35 @@ class ReservationController extends Controller
         return new ReservationResource($reservation);
     }
 
+    public function is_reservation_exist($date, $start_time, $end_time, $venue_id, $reservation_id = null)
+    {
+        $date_str = Carbon::parse($date)->toDateString();
+        $start_time_str = Carbon::parse($start_time)->toTimeString();
+        $end_time_str = Carbon::parse($end_time)->toTimeString();
+
+        $reservation = Reservation::where([
+            ['date', '=', $date_str],
+            ['venue_id', '=', $venue_id],
+        ]);
+
+        if ($reservation_id !== null) {
+            $reservation->where('id', '!=', $reservation_id);
+        }
+
+        return $reservation->where(function ($query) use ($start_time_str, $end_time_str) {
+            $query->where([
+                ['start_time', '<=', $start_time_str],
+                ['end_time', '>', $start_time_str],
+            ])->orWhere([
+                ['start_time', '<', $end_time_str],
+                ['end_time', '>=', $end_time_str],
+            ])->orWhere([
+                ['start_time', '>=', $start_time_str],
+                ['end_time', '<=', $end_time_str],
+            ]);
+        })->exists();
+    }
+
     public function show(Reservation $reservation)
     {
         $reservation->load(["venue", "user"]);
@@ -115,7 +143,7 @@ class ReservationController extends Controller
 
     public function show_user(Request $request)
     {
-        $query = Reservation::with(["venue.sportType", "user", "matchGame.team1", "matchGame.team2"])
+        $query = Reservation::with(["venue.sportType", "user", "matchGame.users"])
             ->where("user_id", auth()->id())->latest();
 
         $reservations = $request->has('all')
@@ -143,36 +171,8 @@ class ReservationController extends Controller
         ]);
     }
 
-    public function is_reservation_exist($date, $start_time, $end_time, $venue_id, $reservation_id = null)
-    {
-        $date_str = Carbon::parse($date)->toDateString();
-        $start_time_str = Carbon::parse($start_time)->toTimeString();
-        $end_time_str = Carbon::parse($end_time)->toTimeString();
-
-        $reservation = Reservation::where([
-            ['date', '=', $date_str],
-            ['venue_id', '=', $venue_id],
-        ]);
-
-        if ($reservation_id !== null) {
-            $reservation->where('id', '!=', $reservation_id);
-        }
-
-        return $reservation->where(function ($query) use ($start_time_str, $end_time_str) {
-            $query->where([
-                ['start_time', '<=', $start_time_str],
-                ['end_time', '>', $start_time_str],
-            ])->orWhere([
-                ['start_time', '<', $end_time_str],
-                ['end_time', '>=', $end_time_str],
-            ])->orWhere([
-                ['start_time', '>=', $start_time_str],
-                ['end_time', '<=', $end_time_str],
-            ]);
-        })->exists();
-    }
-
     // get report of reservation base custom date
+
     public function custom_report(ReservationReportRequest $request)
     {
         Gate::authorize('viewAdmin', Reservation::class);
@@ -212,7 +212,7 @@ class ReservationController extends Controller
         Gate::authorize('viewAdmin', Reservation::class);
 
         $year = Carbon::now()->year;
-        $query = Reservation::with(["venue.sportType", "user", "matchGame.team1", "matchGame.team2"]);
+        $query = Reservation::with(["venue.sportType", "user", "matchGame.users"]);
 
         if ($request->filled('month')) {
             $month = $request->month;

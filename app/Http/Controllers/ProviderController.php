@@ -23,7 +23,7 @@ class ProviderController extends Controller
                 'name' => $providerUser->name,
             ],
             [
-                'photo' => $providerUser->avatar
+                'photo' => $providerUser->avatar,
             ]
         );
 

@@ -3,7 +3,6 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
@@ -37,6 +36,11 @@ class User extends Authenticatable
         'code',
     ];
 
+    public function routeNotificationForVonage(): string
+    {
+        return $this->phone;
+    }
+
     /**
      * Get the attributes that should be cast.
      *
@@ -47,17 +51,7 @@ class User extends Authenticatable
         return [
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
-            'is_admin' => 'boolean'
+            'is_admin' => 'boolean',
         ];
-    }
-
-    public function teams(): BelongsToMany
-    {
-        return $this->belongsToMany(Team::class);
-    }
-
-    public function routeNotificationForVonage(): string
-    {
-        return $this->phone;
     }
 }
