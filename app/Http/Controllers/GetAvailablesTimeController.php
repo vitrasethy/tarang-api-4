@@ -17,6 +17,12 @@ class GetAvailablesTimeController extends Controller
     {
         $validated = $request->validated();
 
+        if (Carbon::parse($validated['date']. ' ' . $validated['start_time'])->diffInMinutes(now()) <= 30) {
+            return response()->json([
+                'message' => "Can't reserve 30mn before."
+            ], 404);
+        }
+
         // initialize variable parse time using carbon
         $start_time = Carbon::parse($validated['start_time'])->format('H:i:s');
         $end_time = Carbon::parse($validated['end_time'])->format('H:i:s');
