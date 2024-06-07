@@ -20,44 +20,24 @@ class ReservationController extends Controller
     {
         $query = Reservation::with(["venue.sportType", "user", "matchGame.team1", "matchGame.team2"]);
 
-        // get all data without pagination
+        // Return all data without pagination if 'all' parameter is present
         if ($request->has('all')) {
             return ReservationResource::collection($query->latest()->get());
         }
 
-        // user filter date and sport type
-        if ($request->filled('date') && $request->filled('type')) {
-            $sportType = $request->type;
-            $reservation = $query
-                ->where('date', $request->date)
-                ->whereHas('venue.sportType', function (Builder $builder) use ($sportType) {
-                    $builder->where('id', $sportType);
-                })
-                ->latest()
-                ->paginate(5)
-                ->appends([
-                    'date' => $request->date,
-                    'type' => $sportType,
-                ]);
-        } else {
-            // user either filter by date or sport type
-            if ($request->filled('date')) {
-                $reservation = $query
-                    ->where('date', $request->date)
-                    ->latest()
-                    ->paginate(5)
-                    ->appends(['date' => $request->date]);
-            } else {
-                $sportType = $request->type;
-                $reservation = $query
-                    ->whereHas('venue.sportType', function (Builder $builder) use ($sportType) {
-                        $builder->where('id', $sportType);
-                    })
-                    ->latest()
-                    ->paginate(5)
-                    ->appends(['type' => $sportType]);
-            }
+        // Apply filters based on 'date' and 'type' parameters
+        if ($request->filled('date')) {
+            $query->where('date', $request->date);
         }
+
+        if ($request->filled('type')) {
+            $query->whereHas('venue.sportType', function (Builder $builder) use ($request) {
+                $builder->where('id', $request->type);
+            });
+        }
+
+        // Paginate the results and append query parameters for pagination links
+        $reservation = $query->latest()->paginate(5)->appends($request->only('date', 'type'));
 
         return ReservationResource::collection($reservation);
     }
