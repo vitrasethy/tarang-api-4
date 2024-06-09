@@ -38,6 +38,9 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('reservation/report', [ReservationController::class, 'report']);
     Route::get('venues/report', [VenueController::class, 'report']);
     Route::get('reservation/pending', [ReservationController::class, 'pending']);
+
+    // show reservation for each user
+    Route::get('reservations-user', [ReservationController::class, 'show_user']);
 });
 
 // Route of major models which not protected
@@ -47,9 +50,6 @@ Route::get('amenities', [AmenityController::class, 'index']);
 Route::get('match-games', [MatchGameController::class, 'index']);
 Route::get('reservation', [ReservationController::class, 'index']);
 Route::get('sport-types', [SportTypeController::class, 'index']);
-
-// show reservation for each user
-Route::get('reservations-user', [ReservationController::class, 'show_user']);
 
 // get the available time for reservation
 Route::post('available-time', GetAvailablesTimeController::class);
