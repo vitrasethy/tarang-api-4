@@ -155,8 +155,6 @@ class ReservationController extends Controller
 
     public function find_reservation(FindReservationRequest $request)
     {
-        Gate::authorize('viewAdmin', Reservation::class);
-
         $validated = $request->validated();
 
         $reservation = $this->is_reservation_exist(
