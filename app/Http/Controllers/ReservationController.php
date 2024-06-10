@@ -75,7 +75,7 @@ class ReservationController extends Controller
 //        $user->notify((new SendReminderSMS($request->input('start_time'))))->delay("2024-06-10 15:05:00");
         $delay = now()->addMinutes(2);
 
-        $user->notify((new SendReminderSMS($request->input('start_time')))->delay($delay));
+        $user->notify((new SendReminderSMS($request->input('start_time'))));
 
         return new ReservationResource($reservation);
     }
