@@ -44,20 +44,31 @@ class MatchGameController extends Controller
         return new MatchGameResource($matchGame);
     }
 
-    public function update(MatchGame $matchGame)
-    {
-        Gate::authorize('update', $matchGame);
-
-        $matchGame->users()->attach(auth()->id());
-
-        return response()->noContent();
-    }
-
     public function destroy(MatchGame $matchGame)
     {
         Gate::authorize('delete', $matchGame);
 
         $matchGame->delete();
+
+        return response()->noContent();
+    }
+
+    public function accepting(MatchGame $matchGame)
+    {
+        Gate::authorize('accepting', $matchGame);
+
+        $matchGame->update([
+            "is_accepted" => 1,
+        ]);
+
+        return response()->noContent();
+    }
+
+    public function update(MatchGame $matchGame)
+    {
+        Gate::authorize('update', $matchGame);
+
+        $matchGame->users()->attach(auth()->id());
 
         return response()->noContent();
     }

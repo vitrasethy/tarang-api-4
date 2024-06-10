@@ -21,4 +21,9 @@ class MatchGamePolicy
     {
         return $user->is_admin === true || $user->id === $matchGame->reservation->user_id;
     }
+
+    public function accepting(User $user, MatchGame $matchGame): bool
+    {
+        return $user->id === $matchGame->reservation->user_id;
+    }
 }

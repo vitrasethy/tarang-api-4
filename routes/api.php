@@ -41,6 +41,9 @@ Route::middleware('auth:sanctum')->group(function () {
 
     // show reservation for each user
     Route::get('reservations-user', [ReservationController::class, 'show_user']);
+
+    // accept opp team for playing
+    Route::put('match-games/accept/{matchGame}', [MatchGameController::class, 'accepting']);
 });
 
 // Route of major models which not protected
