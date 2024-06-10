@@ -68,7 +68,7 @@ class ReservationController extends Controller
 
         $user = auth()->user();
 
-        $delay = Carbon::parse("$request->input('date') $request->input('start_time')")->subMinutes(15);
+        $delay = Carbon::parse($request->input('date').' '.$request->input('start_time'))->subMinutes(15);
         $user->notify(new SendReminderSMS($request->input('start_time')))->delay($delay);
 
         return new ReservationResource($reservation);
