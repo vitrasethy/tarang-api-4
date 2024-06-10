@@ -30,21 +30,19 @@ class UserController extends Controller
         return response()->noContent();
     }
 
-    public function login(LoginRequest $request)
+    public function update(Request $request)
     {
-        $validated = $request->validated();
-
-        if (! Auth::attempt($validated)) {
-            throw ValidationException::withMessages([
-                'phone' => __('auth.failed'),
-            ]);
-        }
-
-        $token = $request->user()->createToken('mobile');
-
-        return response()->json([
-            'token' => $token->plainTextToken,
+        $validated = $request->validate([
+            "name" => "required|string",
+            "phone" => "required|string",
+            "photo" => "required|url",
         ]);
+
+        $user = auth()->user();
+
+        $user->update($validated);
+
+        return response()->noContent();
     }
 
     public function verify(Request $request)
@@ -61,11 +59,28 @@ class UserController extends Controller
         }
 
         $user->update([
-            'is_verified' => 1
+            'is_verified' => 1,
         ]);
 
         Auth::login($user);
 
         return response()->noContent();
+    }
+
+    public function login(LoginRequest $request)
+    {
+        $validated = $request->validated();
+
+        if (!Auth::attempt($validated)) {
+            throw ValidationException::withMessages([
+                'phone' => __('auth.failed'),
+            ]);
+        }
+
+        $token = $request->user()->createToken('mobile');
+
+        return response()->json([
+            'token' => $token->plainTextToken,
+        ]);
     }
 }
