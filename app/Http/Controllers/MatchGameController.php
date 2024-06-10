@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\MatchGameRequest;
 use App\Http\Resources\MatchGameResource;
 use App\Models\MatchGame;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
 
@@ -15,7 +16,9 @@ class MatchGameController extends Controller
         $matchGames = MatchGame::with(['reservation.venue', 'users']);
 
         if ($request->has('user')) {
-            $matchGames->where('user1_id', auth()->id())->orWhere('user2_id', auth()->id());
+            $matchGames->whereHas('users', function (Builder $query) {
+                $query->where('user_id', auth()->id());
+            });
 
             return MatchGameResource::collection($matchGames->paginate(5));
         }
