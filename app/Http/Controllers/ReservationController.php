@@ -8,6 +8,7 @@ use App\Http\Requests\ReservationRequest;
 use App\Http\Resources\ReservationCollection;
 use App\Http\Resources\ReservationResource;
 use App\Models\Reservation;
+use App\Notifications\SendReminderSMS;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
@@ -65,10 +66,10 @@ class ReservationController extends Controller
             "user_id" => auth()->id(),
         ]);
 
-//        $user = auth()->user();
+        $user = auth()->user();
 
-//        $delay = Carbon::parse("$request->input('date') $request->input('start_time')")->subMinutes(2);
-//        $user->notify(new SendReminderSMS($request->input('start_time')))->delay($delay);
+        $delay = Carbon::parse("$request->input('date') $request->input('start_time')")->subMinutes(2);
+        $user->notify(new SendReminderSMS($request->input('start_time')))->delay($delay);
 
         return new ReservationResource($reservation);
     }
