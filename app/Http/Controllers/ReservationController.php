@@ -35,6 +35,8 @@ class ReservationController extends Controller
             });
         }
 
+//        if ($request->has('expired'))
+
         // Paginate the results and append query parameters for pagination links
         $reservation = $query->latest()->paginate(5)->appends($request->only('date', 'type'));
 

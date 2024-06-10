@@ -41,13 +41,9 @@ class MatchGameController extends Controller
         return new MatchGameResource($matchGame);
     }
 
-    public function update(MatchGameRequest $request, MatchGame $matchGame)
+    public function update(MatchGame $matchGame)
     {
         Gate::authorize('update', MatchGame::class);
-
-        $validated = $request->validated();
-
-        $matchGame->update($validated);
 
         $matchGame->users()->attach(auth()->id());
 

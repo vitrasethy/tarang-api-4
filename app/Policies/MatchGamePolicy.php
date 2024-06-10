@@ -12,7 +12,9 @@ class MatchGamePolicy
 
     public function update(User $user, MatchGame $matchGame): bool
     {
-        return $user->is_admin === true || $matchGame->reservation->user_id !== auth()->id();
+        $count = $matchGame->users()->count();
+
+        return $matchGame->reservation->user_id !== $user->id && $count === 1;
     }
 
     public function delete(User $user, MatchGame $matchGame): bool
