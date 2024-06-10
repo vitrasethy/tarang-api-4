@@ -28,8 +28,7 @@ class SendReminderSMS extends Notification
     {
         return (new VonageMessage)->content('
             This is a friendly reminder that your reservation with us is scheduled
-            for one hour from now at ' . $this->time . '.
-            We look forward to welcoming you and providing an exceptional experience.
-        ');
+            for one hour from now at '.$this->time
+        );
     }
 }
