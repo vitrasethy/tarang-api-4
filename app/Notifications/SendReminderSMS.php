@@ -27,9 +27,6 @@ class SendReminderSMS extends Notification implements ShouldQueue
 
     public function toVonage(): VonageMessage
     {
-        return (new VonageMessage)->content('
-            This is a friendly reminder that your reservation with us is scheduled
-            for one hour from now at '.$this->time
-        );
+        return (new VonageMessage)->content('You are 30mn before the game start.');
     }
 }
