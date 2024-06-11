@@ -3,11 +3,11 @@
 namespace Database\Seeders;
 
 use App\Models\Amenity;
-use App\Models\Reservation;
 use App\Models\SportType;
-// use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use App\Models\User;
 use Illuminate\Database\Seeder;
+
+// use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 
 class DatabaseSeeder extends Seeder
 {
@@ -32,9 +32,25 @@ class DatabaseSeeder extends Seeder
             ['name' => 'Change Room'],
         ]);
 
-        User::create([
-            'name' => 'Admin Admin',
-            'is_admin' => 1,
+        User::insert([
+            [
+                'name' => 'Admin Admin',
+                'phone' => '85592694905',
+                'password' => '$2y$12$ryRZosbotrrhcUybdX02yeRqcOhFfVjoqQDGedkPjy/qxAAFngYnK',
+                'is_admin' => 1,
+            ],
+            [
+                'name' => 'Anakin Skywalker',
+                'phone' => '855696969',
+                'password' => '$2y$12$ryRZosbotrrhcUybdX02yeRqcOhFfVjoqQDGedkPjy/qxAAFngYnK',
+                'is_admin' => 0,
+            ],
+            [
+                'name' => 'Obi wan Kenobi',
+                'phone' => '855420420',
+                'password' => '$2y$12$ryRZosbotrrhcUybdX02yeRqcOhFfVjoqQDGedkPjy/qxAAFngYnK',
+                'is_admin' => 0,
+            ],
         ]);
     }
 }
