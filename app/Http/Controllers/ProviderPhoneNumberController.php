@@ -48,7 +48,7 @@ class ProviderPhoneNumberController extends Controller
         } else {
             return response()->json([
                 "message" => "'Code is not valid.'",
-            ], 401);
+            ], 404);
         }
 
         return response()->json([
