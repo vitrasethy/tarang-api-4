@@ -47,8 +47,7 @@ class ProviderPhoneNumberController extends Controller
             ]);
         } else {
             return response()->json([
-                "db_code" => $user->code,
-                "code" => $validated['code'],
+                "message" => "Code is not valid.",
             ], 404);
         }
 

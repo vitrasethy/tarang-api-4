@@ -5,9 +5,12 @@ namespace App\Http\Controllers;
 use App\Http\Requests\MatchGameRequest;
 use App\Http\Resources\MatchGameResource;
 use App\Models\MatchGame;
+use App\Models\User;
+use App\Notifications\SendRejectMatchNotification;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Facades\Notification;
 
 class MatchGameController extends Controller
 {
@@ -69,6 +72,17 @@ class MatchGameController extends Controller
         Gate::authorize('update', $matchGame);
 
         $matchGame->users()->attach(auth()->id());
+
+        return response()->noContent();
+    }
+
+    public function reject(MatchGame $matchGame, User $user)
+    {
+        Gate::authorize('delete', $matchGame);
+
+        $matchGame->users()->detach($user);
+
+        Notification::send(auth()->user(), new SendRejectMatchNotification());
 
         return response()->noContent();
     }

@@ -48,6 +48,7 @@ Route::middleware('auth:sanctum')->group(function () {
 
     Route::post('/user/phone', [ProviderPhoneNumberController::class, 'store']);
     Route::post('/user/phone/verify', [ProviderPhoneNumberController::class, 'verify']);
+    Route::delete('/match-games/{matchGame}/{user}', [MatchGameController::class, 'reject']);
 });
 
 // Route of major models which not protected

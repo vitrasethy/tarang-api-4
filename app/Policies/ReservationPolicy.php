@@ -17,7 +17,7 @@ class ReservationPolicy
 
     public function update(User $user, Reservation $reservation): bool
     {
-        return $user->is_admin === true || $user->id === $reservation->user_id;
+        return $user->is_admin === true;
     }
 
     public function delete(User $user, Reservation $reservation): bool
