@@ -39,10 +39,14 @@ class ProviderController extends Controller
 
         Auth::login($user);
 
-        if ($user->is_admin === 1) {
+        if ($user->phone === null) {
+            if ($user->is_admin === 1) {
+                return redirect('http://localhost:3000/phone');
+            }
+
             return redirect('http://localhost:3000/phone');
         }
 
-        return redirect('http://localhost:3000/phone');
+        return redirect('http://localhost:3000');
     }
 }

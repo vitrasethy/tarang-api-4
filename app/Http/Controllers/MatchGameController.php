@@ -82,7 +82,7 @@ class MatchGameController extends Controller
 
         $matchGame->users()->detach($user);
 
-        Notification::send(auth()->user(), new SendRejectMatchNotification());
+        Notification::send($user, new SendRejectMatchNotification());
 
         return response()->noContent();
     }

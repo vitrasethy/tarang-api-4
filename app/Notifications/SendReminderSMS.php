@@ -15,12 +15,7 @@ class SendReminderSMS extends Notification implements ShouldQueue
     {
     }
 
-    /**
-     * Get the notification's delivery channels.
-     *
-     * @return array<int, string>
-     */
-    public function via(object $notifiable): array
+    public function via(): array
     {
         return ['vonage'];
     }
