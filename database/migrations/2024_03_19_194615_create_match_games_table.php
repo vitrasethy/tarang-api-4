@@ -11,6 +11,7 @@ return new class extends Migration {
         Schema::create('match_games', function (Blueprint $table) {
             $table->id();
             $table->boolean('is_accepted')->default(false);
+            $table->boolean('is_requested')->default(false);
             $table->foreignIdFor(Reservation::class)->constrained()->cascadeOnDelete();
             $table->text('comment')->nullable();
             $table->softDeletes();

@@ -16,7 +16,7 @@ class MatchGameController extends Controller
 {
     public function index(Request $request)
     {
-        $matchGames = MatchGame::with(['reservation.venue', 'reservation.user', 'users']);
+        $matchGames = MatchGame::with(['users']);
 
         if ($request->has('user')) {
             $matchGames->whereHas('users', function (Builder $query) {
@@ -24,6 +24,12 @@ class MatchGameController extends Controller
             });
 
             return MatchGameResource::collection($matchGames->paginate(5));
+        }
+
+        if ($request->has('no-opponent')) {
+            $matchGames->where('is_requested', 0);
+
+            return MatchGameResource::collection($matchGames->paginate(5)->appends('users'));
         }
 
         return MatchGameResource::collection($matchGames->paginate(5));
@@ -71,6 +77,10 @@ class MatchGameController extends Controller
     {
         Gate::authorize('update', $matchGame);
 
+        $matchGame->update([
+            "is_requested" => 1,
+        ]);
+
         $matchGame->users()->attach(auth()->id());
 
         return response()->noContent();
@@ -79,6 +89,10 @@ class MatchGameController extends Controller
     public function reject(MatchGame $matchGame, User $user)
     {
         Gate::authorize('delete', $matchGame);
+
+        $matchGame->update([
+            "is_requested" => 0,
+        ]);
 
         $matchGame->users()->detach($user);
 
