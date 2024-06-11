@@ -38,21 +38,21 @@ class DatabaseSeeder extends Seeder
                 'phone' => '85592694905',
                 'password' => '$2y$12$ryRZosbotrrhcUybdX02yeRqcOhFfVjoqQDGedkPjy/qxAAFngYnK',
                 'is_admin' => 1,
-                'is_verify' => 1,
+                'is_verified' => 1,
             ],
             [
                 'name' => 'Anakin Skywalker',
                 'phone' => '855696969',
                 'password' => '$2y$12$ryRZosbotrrhcUybdX02yeRqcOhFfVjoqQDGedkPjy/qxAAFngYnK',
                 'is_admin' => 0,
-                'is_verify' => 1,
+                'is_verified' => 1,
             ],
             [
                 'name' => 'Obi wan Kenobi',
                 'phone' => '855420420',
                 'password' => '$2y$12$ryRZosbotrrhcUybdX02yeRqcOhFfVjoqQDGedkPjy/qxAAFngYnK',
                 'is_admin' => 0,
-                'is_verify' => 1,
+                'is_verified' => 1,
             ],
         ]);
     }
