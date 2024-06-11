@@ -66,9 +66,9 @@ class ReservationController extends Controller
         ]);
 
         $user = auth()->user();
-        $delay = now()->addMinutes(2);
+        $delay = now()->addMinute();
 
-        Notification::send($user, (new SendReminderSMS('hello'))->delay($delay));
+        Notification::send($user, (new SendReminderSMS())->delay($delay));
 
         return new ReservationResource($reservation);
     }

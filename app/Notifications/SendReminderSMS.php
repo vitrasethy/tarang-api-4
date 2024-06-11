@@ -11,10 +11,6 @@ class SendReminderSMS extends Notification implements ShouldQueue
 {
     use Queueable;
 
-    public function __construct(private readonly string $time)
-    {
-    }
-
     public function via(): array
     {
         return ['vonage'];
