@@ -6,7 +6,7 @@ use App\Http\Requests\MatchGameRequest;
 use App\Http\Resources\MatchGameResource;
 use App\Models\MatchGame;
 use App\Models\User;
-use App\Notifications\SendSMS;
+use App\Notifications\SendRejectMatchNotification;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
@@ -82,7 +82,7 @@ class MatchGameController extends Controller
 
         $matchGame->users()->detach($user);
 
-        Notification::send($user, new SendSMS(123));
+        Notification::send($user, new SendRejectMatchNotification());
 
         return response()->noContent();
     }

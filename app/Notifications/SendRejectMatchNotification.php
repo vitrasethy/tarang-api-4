@@ -11,10 +11,6 @@ class SendRejectMatchNotification extends Notification implements ShouldQueue
 {
     use Queueable;
 
-    public function __construct()
-    {
-    }
-
     public function via(): array
     {
         return ['vonage'];
