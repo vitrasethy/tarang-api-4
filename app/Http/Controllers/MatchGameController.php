@@ -82,7 +82,7 @@ class MatchGameController extends Controller
 
         $matchGame->users()->detach($user);
 
-        Notification::send($user, new SendSMS('hello'));
+        Notification::send($user, new SendSMS(123));
 
         return response()->noContent();
     }
