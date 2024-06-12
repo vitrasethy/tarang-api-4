@@ -16,7 +16,7 @@ class MatchGameController extends Controller
 {
     public function index(Request $request)
     {
-        $matchGames = MatchGame::with(['users']);
+        $matchGames = MatchGame::with(['reservation.venue', 'reservation.user', 'users']);
 
         if ($request->has('user')) {
             $matchGames->whereHas('users', function (Builder $query) {
