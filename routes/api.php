@@ -43,6 +43,9 @@ Route::middleware('auth:sanctum')->group(function () {
     // show reservation for each user
     Route::get('reservations-user', [ReservationController::class, 'show_user']);
 
+    // show reservation for each user history
+    Route::get('reservations-user/history', [ReservationController::class, 'show_user_history']);
+
     // accept opp team for playing
     Route::put('match-games/accept/{matchGame}', [MatchGameController::class, 'accepting']);
 

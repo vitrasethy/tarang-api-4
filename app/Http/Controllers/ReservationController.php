@@ -165,6 +165,17 @@ class ReservationController extends Controller
         return new ReservationCollection($reservations);
     }
 
+    public function show_user_history()
+    {
+        $reservations = Reservation::with(["venue.sportType", "user", "matchGame.users"])
+            ->where("user_id", auth()->id())
+            ->where("date", "<", now())
+            ->latest()
+            ->paginate(5);
+
+        return new ReservationCollection($reservations);
+    }
+
     public function find_reservation(FindReservationRequest $request)
     {
         $validated = $request->validated();
