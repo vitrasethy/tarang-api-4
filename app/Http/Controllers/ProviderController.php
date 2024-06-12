@@ -39,14 +39,14 @@ class ProviderController extends Controller
 
         Auth::login($user);
 
-        if ($user->phone === null) {
-            if ($user->is_admin === 1) {
-                return redirect('http://localhost:3000/phone');
-            }
-
-            return redirect('http://localhost:3000/phone');
+        if ($user->is_admin === 1) {
+            return redirect('https://admin.tarang.site/phone');
         }
 
-        return redirect('http://localhost:3000');
+        if ($user->phone === null) {
+            return redirect('https://tarang.site/phone');
+        }
+
+        return redirect('https://tarang.site');
     }
 }
