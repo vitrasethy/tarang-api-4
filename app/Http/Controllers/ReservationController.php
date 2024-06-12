@@ -155,7 +155,7 @@ class ReservationController extends Controller
     {
         $query = Reservation::with(["venue.sportType", "user", "matchGame.users"])
             ->where("user_id", auth()->id())
-            ->where("created_at", ">=", now())
+            ->where("date", ">=", now())
             ->latest();
 
         $reservations = $request->has('all')
