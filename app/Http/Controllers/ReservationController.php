@@ -9,9 +9,9 @@ use App\Http\Resources\ReservationCollection;
 use App\Http\Resources\ReservationResource;
 use App\Models\Reservation;
 use App\Notifications\SendReminderSMS;
-use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Notification;
 
@@ -140,7 +140,7 @@ class ReservationController extends Controller
 
         $reservation_date = Carbon::parse($reservation->date);
 
-        if ($reservation_date->greaterThan(Carbon::now()->subDay())) {
+        if ($reservation_date->subDay()->lessThan(Carbon::now())) {
             return response()->json([
                 "message" => "Can't delete before one day",
             ], 420);
