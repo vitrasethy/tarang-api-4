@@ -26,6 +26,15 @@ class MatchGameController extends Controller
             return MatchGameResource::collection($matchGames->paginate(5));
         }
 
+        if ($request->filled('type')) {
+            $sport_type_id = $request->type;
+            $matchGames->whereHas('reservation.venue', function (Builder $query) use ($sport_type_id) {
+                $query->where('sport_type_id', $sport_type_id);
+            });
+
+            return MatchGameResource::collection($matchGames->paginate(5));
+        }
+
         if ($request->has('no-opponent')) {
             $matchGames->where('is_requested', 0);
 
