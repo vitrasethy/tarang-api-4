@@ -138,6 +138,14 @@ class ReservationController extends Controller
     {
         Gate::authorize('delete', $reservation);
 
+        $reservation_date = Carbon::parse($reservation->date);
+
+        if ($reservation_date->greaterThan(Carbon::now()->subDay())) {
+            return response()->json([
+                "message" => "Can't delete before one day",
+            ], 420);
+        }
+
         $reservation->delete();
 
         return response()->noContent();
