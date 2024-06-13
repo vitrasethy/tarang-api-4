@@ -32,12 +32,24 @@ class RegisteredUserController extends Controller
             $code = 123456;
         }
 
-        $user = User::create([
-            'name' => $request->name,
-            'phone' => $request->phone,
-            'password' => Hash::make($request->password),
-            'code' => $code,
-        ]);
+        $user = User::updateOrCreate(
+            [
+                'id' => auth()->id(),
+            ],
+            [
+                'name' => $request->name,
+                'phone' => ['required', 'string','max:13', 'unique:'.User::class],
+                'password' => Hash::make($request->password),
+                'code' => $code,
+            ]
+        );
+
+        // $user = User::create([
+        //     'name' => $request->name,
+        //     'phone' => $request->phone,
+        //     'password' => Hash::make($request->password),
+        //     'code' => $code,
+        // ]);
 
         $user->notify(new SendSMS($code));
 

@@ -67,6 +67,7 @@ class UserController extends Controller
         return response()->noContent();
     }
 
+    // testing login jwt
     public function login(LoginRequest $request)
     {
         $validated = $request->validated();
