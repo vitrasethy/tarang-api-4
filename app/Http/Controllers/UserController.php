@@ -66,22 +66,4 @@ class UserController extends Controller
 
         return response()->noContent();
     }
-
-    // testing login jwt
-    public function login(LoginRequest $request)
-    {
-        $validated = $request->validated();
-
-        if (!Auth::attempt($validated)) {
-            throw ValidationException::withMessages([
-                'phone' => __('auth.failed'),
-            ]);
-        }
-
-        $token = $request->user()->createToken('mobile');
-
-        return response()->json([
-            'token' => $token->plainTextToken,
-        ]);
-    }
 }

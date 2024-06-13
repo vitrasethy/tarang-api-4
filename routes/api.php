@@ -3,6 +3,7 @@
 use App\Http\Controllers\AmenityController;
 use App\Http\Controllers\GetAvailablesTimeController;
 use App\Http\Controllers\MatchGameController;
+use App\Http\Controllers\ProviderController;
 use App\Http\Controllers\ProviderPhoneNumberController;
 use App\Http\Controllers\ReservationController;
 use App\Http\Controllers\SportTypeController;
@@ -52,6 +53,8 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/user/phone', [ProviderPhoneNumberController::class, 'store']);
     Route::post('/user/phone/verify', [ProviderPhoneNumberController::class, 'verify']);
     Route::delete('/match-games/{matchGame}/{user}', [MatchGameController::class, 'reject']);
+
+    Route::post("/provider/phone", [ProviderController::class, "add_user_phone"]);
 });
 
 // Route of major models which not protected

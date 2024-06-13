@@ -5,11 +5,8 @@ namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
 use App\Models\User;
 use App\Notifications\SendSMS;
-use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use Illuminate\Http\Response;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rules;
 
@@ -32,24 +29,12 @@ class RegisteredUserController extends Controller
             $code = 123456;
         }
 
-        $user = User::updateOrCreate(
-            [
-                'id' => auth()->id(),
-            ],
-            [
-                'name' => $request->name,
-                'phone' => ['required', 'string','max:13', 'unique:'.User::class],
-                'password' => Hash::make($request->password),
-                'code' => $code,
-            ]
-        );
-
-        // $user = User::create([
-        //     'name' => $request->name,
-        //     'phone' => $request->phone,
-        //     'password' => Hash::make($request->password),
-        //     'code' => $code,
-        // ]);
+        $user = User::create([
+            'name' => $request->name,
+            'phone' => $request->phone,
+            'password' => Hash::make($request->password),
+            'code' => $code,
+        ]);
 
         $user->notify(new SendSMS($code));
 
