@@ -6,7 +6,6 @@ use App\Http\Requests\MatchGameRequest;
 use App\Http\Resources\MatchGameResource;
 use App\Models\MatchGame;
 use App\Models\User;
-use App\Notifications\CancelMatchGameNotification;
 use App\Notifications\SendRejectMatchNotification;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
@@ -67,23 +66,15 @@ class MatchGameController extends Controller
     {
         Gate::authorize('delete', $matchGame);
 
-        if ($matchGame->is_accepted === 1 || $matchGame->is_requested === 1) {
-            $home_team = $matchGame->reservation->user_id;
-            $away_team = $matchGame->users()->whereNot("user_id", $home_team)->first();
-            Notification::send($away_team, new CancelMatchGameNotification());
-        }
+//        if ($matchGame->is_accepted === 1 || $matchGame->is_requested === 1) {
+//            $home_team = $matchGame->reservation->user_id;
+//            $away_team = $matchGame->users()->whereNot("user_id", $home_team)->first();
+//            Notification::send($away_team, new CancelMatchGameNotification());
+//        }
 
         $matchGame->delete();
-
-        return response()->noContent();
-    }
-
-    public function accepting(MatchGame $matchGame)
-    {
-        Gate::authorize('accepting', $matchGame);
-
-        $matchGame->update([
-            "is_accepted" => 1,
+        $matchGame->reservation()->update([
+            "find_team" => 0,
         ]);
 
         return response()->noContent();
@@ -98,6 +89,17 @@ class MatchGameController extends Controller
         ]);
 
         $matchGame->users()->attach(auth()->id());
+
+        return response()->noContent();
+    }
+
+    public function accepting(MatchGame $matchGame)
+    {
+        Gate::authorize('accepting', $matchGame);
+
+        $matchGame->update([
+            "is_accepted" => 1,
+        ]);
 
         return response()->noContent();
     }
