@@ -32,7 +32,7 @@ class MatchGameController extends Controller
                 $query->where('sport_type_id', $sport_type_id);
             });
 
-            return MatchGameResource::collection($matchGames->paginate(5));
+            return MatchGameResource::collection($matchGames->paginate(6));
         }
 
         if ($request->has('no-opponent')) {

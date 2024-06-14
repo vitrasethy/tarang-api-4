@@ -39,7 +39,7 @@ class VenueController extends Controller
 
         $venues = $request->has('all')
             ? $query->get()
-            : $query->paginate(5)->appends([$filterKey => $filterValue]);
+            : $query->paginate(6)->appends([$filterKey => $filterValue]);
 
         return new VenueCollection($venues);
     }
