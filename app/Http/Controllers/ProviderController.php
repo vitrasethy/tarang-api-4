@@ -2,13 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\User;
 use App\Models\Provider;
-use Illuminate\Http\Request;
+use App\Models\User;
 use App\Notifications\SendSMS;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Laravel\Socialite\Facades\Socialite;
 use Illuminate\Support\Facades\Notification;
+use Laravel\Socialite\Facades\Socialite;
 
 class ProviderController extends Controller
 {
@@ -36,7 +36,6 @@ class ProviderController extends Controller
             ],
             [
                 'user_id' => $user->id,
-                'provider_token' => $providerUser->token,
             ]
         );
 
@@ -56,7 +55,7 @@ class ProviderController extends Controller
     public function add_user_phone(Request $request)
     {
         $validated = $request->validate([
-            "phone" => ['required', 'string', 'max:13', 'unique:' . User::class],
+            "phone" => ['required', 'string', 'max:13', 'unique:'.User::class],
         ]);
 
         $user = auth()->user();
