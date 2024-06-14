@@ -8,6 +8,7 @@ use App\Notifications\SendSMS;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Notification;
 use Illuminate\Validation\Rules;
 
 class RegisteredUserController extends Controller
@@ -19,7 +20,7 @@ class RegisteredUserController extends Controller
     {
         $request->validate([
             'name' => ['required', 'string', 'max:255'],
-            'phone' => ['required', 'string','max:13', 'unique:'.User::class],
+            'phone' => ['required', 'string', 'max:13', 'unique:'.User::class],
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
         ]);
 
@@ -36,7 +37,7 @@ class RegisteredUserController extends Controller
             'code' => $code,
         ]);
 
-        $user->notify(new SendSMS($code));
+        Notification::send($user, new SendSMS($code));
 
         return response()->json($user);
     }

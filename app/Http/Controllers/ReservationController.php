@@ -140,7 +140,7 @@ class ReservationController extends Controller
 
         $reservation_date = Carbon::parse($reservation->date);
 
-        if ($reservation_date->subDay()->lessThan(Carbon::now())) {
+        if (!auth()->user()->is_admin && $reservation_date->subDay()->lessThan(Carbon::now())) {
             return response()->json([
                 "message" => "Can't delete before one day",
             ], 420);
