@@ -211,8 +211,7 @@ class ReservationController extends Controller
     {
         Gate::authorize('viewAdmin', Reservation::class);
 
-        $reservation_one_month = Reservation::whereBetween(
-            'date', [now()->subMonth()->format('Y-m-d'), now()->format('Y-m-d')])->count();
+        $reservation_one_month = Reservation::count();
 
         return response()->json([
             "count" => $reservation_one_month,

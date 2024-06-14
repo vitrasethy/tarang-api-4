@@ -73,9 +73,7 @@ class MatchGameController extends Controller
 //        }
 
         $matchGame->delete();
-        $matchGame->reservation()->update([
-            "find_team" => 0,
-        ]);
+        $matchGame->reservation()->update(["find_team" => 0]);
 
         return response()->noContent();
     }
