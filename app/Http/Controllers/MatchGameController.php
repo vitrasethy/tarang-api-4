@@ -6,6 +6,7 @@ use App\Http\Requests\MatchGameRequest;
 use App\Http\Resources\MatchGameResource;
 use App\Models\MatchGame;
 use App\Models\User;
+use App\Notifications\CancelMatchGameNotification;
 use App\Notifications\SendRejectMatchNotification;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
@@ -65,6 +66,12 @@ class MatchGameController extends Controller
     public function destroy(MatchGame $matchGame)
     {
         Gate::authorize('delete', $matchGame);
+
+        if ($matchGame->is_accepted === 1 || $matchGame->is_requested === 1) {
+            $home_team = $matchGame->reservation->user_id;
+            $away_team = $matchGame->users()->whereNot("user_id", $home_team)->first();
+            Notification::send($away_team, new CancelMatchGameNotification());
+        }
 
         $matchGame->delete();
 
