@@ -147,6 +147,7 @@ class ReservationController extends Controller
         }
 
         $reservation->delete();
+        $reservation->matchGame()->delete();
 
         return response()->noContent();
     }
